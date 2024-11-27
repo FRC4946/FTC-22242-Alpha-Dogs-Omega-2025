@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.Commands.TeleopDrive;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
@@ -62,11 +63,12 @@ public class GreasyTeleOp extends LinearOpMode {
                 manualMode = !manualMode;
             }
 
-            s_DriveTrain.drive(
-                    -gamepad1.left_stick_y,
-                    gamepad1.left_stick_x,
-                    gamepad1.right_stick_x
-            );
+            s_DriveTrain.setDefaultCommand(new TeleopDrive(
+                    s_DriveTrain,
+                    -activeGamepad1.left_stick_y,
+                    activeGamepad1.left_stick_x,
+                    activeGamepad1.right_stick_x
+            ));
 
             if (activeGamepad1.options) {
                 s_DriveTrain.resetYaw();
@@ -133,12 +135,6 @@ public class GreasyTeleOp extends LinearOpMode {
                     s_Wrist.setAngle(Constants.WristConstants.transferAngle);
                 }
             }
-
-
-            s_DriveTrain.periodic(telemetry);
-            telemetry.addData("Manual Mode: ", manualMode);
-            telemetry.addData("Elevator Height", s_Elevator.getPosition());
-            telemetry.update();
         }
     }
 }

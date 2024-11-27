@@ -1,18 +1,18 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Constants.DriveTrainConstants;
 
-public class DriveTrain {
+public class DriveTrain extends SubsystemBase {
 
     private final DcMotor frontLeft0;
     private final DcMotor frontRight1;
@@ -47,29 +47,7 @@ public class DriveTrain {
         yawOffset = imu.getAngularOrientation().firstAngle - DriveTrainConstants.controlHubOffset;
     }
 
-    public void drive(double driveY, double driveX, double rotation) {
-
-        double botHeading = getHeading();
-        double headingRadians = Math.toRadians(botHeading);
-
-
-        // Rotate the movement direction counter to the bot's rotation
-
-        double sin = Math.sin(-headingRadians);
-        double cos = Math.cos(-headingRadians);
-
-        double fieldOrientedX = driveX * cos - driveY * sin;
-        double fieldOrientedY = driveX * sin + driveY * cos;
-
-        fieldOrientedX *= DriveTrainConstants.strafingBalancer;  // Counteract imperfect strafing
-
-        double denominator = Math.max(Math.abs(fieldOrientedY) + Math.abs(fieldOrientedX) + Math.abs(rotation), 1);
-
-        double frontLeftPower = (fieldOrientedY + fieldOrientedX + rotation) / denominator;
-        double backLeftPower = (fieldOrientedY - fieldOrientedX + rotation) / denominator;
-        double frontRightPower = (fieldOrientedY - fieldOrientedX - rotation) / denominator;
-        double backRightPower = (fieldOrientedY + fieldOrientedX - rotation) / denominator;
-
+    public void setPower(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
         frontLeft0.setPower(frontLeftPower);
         frontRight1.setPower(frontRightPower);
         backLeft2.setPower(backLeftPower);
@@ -111,16 +89,21 @@ public class DriveTrain {
         return heading;
     }
 
-    public void periodic(Telemetry telemetry) {
-        telemetry.addLine("Drive train");
-        telemetry.addData("Heading: ", getHeading());
+//    public void periodic(Telemetry telemetry) {
+//        telemetry.addLine("Drive train");
+//        telemetry.addData("Heading: ", getHeading());
+//
+//        telemetry.addData("Front Left Power: ", frontLeft0.getPower());
+//
+//        telemetry.addData("Front Right Power: ", frontRight1.getPower());
+//
+//        telemetry.addData("Back Left Power: ", backLeft2.getPower());
+//
+//        telemetry.addData("Back Right Power: ", backRight3.getPower());
+//    }
+    @Override
+    public void periodic() {
 
-        telemetry.addData("Front Left Power: ", frontLeft0.getPower());
-
-        telemetry.addData("Front Right Power: ", frontRight1.getPower());
-
-        telemetry.addData("Back Left Power: ", backLeft2.getPower());
-
-        telemetry.addData("Back Right Power: ", backRight3.getPower());
     }
+
 }

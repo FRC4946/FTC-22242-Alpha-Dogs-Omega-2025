@@ -3,10 +3,11 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants.WristConstants;
 
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Wrist {
+public class Wrist extends SubsystemBase {
     private final Servo leftWrist2;
     private final Servo rightWrist3;
     double intakeAngle = WristConstants.intakeAngle;

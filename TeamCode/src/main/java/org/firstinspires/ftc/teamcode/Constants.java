@@ -42,7 +42,7 @@ public class Constants {
 
     public static final class ArmConstants {
         public static final String arm = "arm4";
-        public static final double exchangeAngle = 0.99; //TODO FIND THIS VALUE
+        public static final double exchangeAngle = 0.99;
         public static final double dropAngle = 0.4; //TODO FIND THIS VALUE
     }
 
