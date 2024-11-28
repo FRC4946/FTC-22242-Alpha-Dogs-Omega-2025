@@ -30,8 +30,8 @@ public class CommandTeleop extends CommandOpMode {
     private Intake s_Intake;
     private Wrist s_Wrist;
     private Extension s_Extension;
-//    private Claw s_Claw;
-//    private Arm s_Arm;
+    private Claw s_Claw;
+    private Arm s_Arm;
 
     private TeleopDrive c_TeleopDrive;
     private PlacePiece c_PlacePiece;
@@ -47,6 +47,8 @@ public class CommandTeleop extends CommandOpMode {
         s_Intake = new Intake(hardwareMap);
         s_Wrist = new Wrist(hardwareMap);
         s_Extension = new Extension(hardwareMap);
+        s_Claw = new Claw(hardwareMap);
+        s_Arm = new Arm(hardwareMap);
 
         c_TeleopDrive = new TeleopDrive(
                 s_Drivetrain,
@@ -55,6 +57,8 @@ public class CommandTeleop extends CommandOpMode {
 
         c_PlacePiece = new PlacePiece(
                 s_Elevator,
+                s_Arm,
+                s_Claw,
                 m_driverOp
         );
 

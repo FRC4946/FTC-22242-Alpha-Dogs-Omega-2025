@@ -34,8 +34,9 @@ public class Constants {
 
     public static final class ExtensionConstants {
         public static final String extension = "extension3";
-        public static final double retracted = 0.5; //TODO FUIND THIS VALUE
-        public static final double extended = 0;  //TODO FIND THIS VALUE
+        public static final double retracted = 0.2;
+        public static final double clearBar = 0.14;
+        public static final double extended = 0;
     }
 
     public static final class ArmConstants {
@@ -54,8 +55,8 @@ public class Constants {
     public static final class ElevatorConstants {
         public static final String elevator = "elevator0";
         public static final int highBasket = 2000;
-        public static final int lowBasket = 0;
-        public static final int exchange = 0;
+        public static final int lowBasket = 80;
+        public static final int exchange = 80;
     }
 
 }
