@@ -4,36 +4,35 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants.WristConstants;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Wrist extends SubsystemBase {
-    private final ServoEx leftWrist2;
-    private final ServoEx rightWrist3;
+    private final Servo leftWrist2;
+    private final Servo rightWrist3;
     double intakeAngle = WristConstants.intakeAngle;
     double teleopAngle = WristConstants.transferAngle;
     double barAngle = WristConstants.barAngle;
 
     public Wrist(HardwareMap hardwareMap) {
-        leftWrist2 = hardwareMap.get(ServoEx.class, WristConstants.leftWrist2);
-        rightWrist3 = hardwareMap.get(ServoEx.class, WristConstants.rightWrist3);
+        leftWrist2 = hardwareMap.get(Servo.class, WristConstants.leftWrist2);
+        rightWrist3 = hardwareMap.get(Servo.class, WristConstants.rightWrist3);
 
-        leftWrist2.setInverted(false);
-        rightWrist3.setInverted(true);
+        leftWrist2.setDirection(Servo.Direction.FORWARD);
+        rightWrist3.setDirection(Servo.Direction.REVERSE);
     }
 
     public double getLeftAngle() {
-        return (leftWrist2.getAngle());
+        return (leftWrist2.getPosition());
     }
 
     public double getRightAngle() {
-        return (rightWrist3.getAngle());
+        return (rightWrist3.getPosition());
     }
 
     public void setAngle(double angle) {
-        rightWrist3.turnToAngle(angle);
-        leftWrist2.turnToAngle(angle);
+        rightWrist3.setPosition(angle);
+        leftWrist2.setPosition(angle);
     }
 
     public void periodic(Telemetry telemetry) {

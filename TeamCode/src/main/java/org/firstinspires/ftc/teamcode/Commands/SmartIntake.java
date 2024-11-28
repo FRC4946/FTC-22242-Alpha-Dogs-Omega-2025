@@ -40,6 +40,5 @@ public class SmartIntake extends CommandBase {
 
         s_Intake.setIntakePower(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER));
 
-
     }
 }
