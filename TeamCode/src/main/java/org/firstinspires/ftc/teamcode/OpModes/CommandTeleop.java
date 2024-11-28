@@ -10,6 +10,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Commands.PlacePiece;
+import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleopDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
@@ -27,13 +28,14 @@ public class CommandTeleop extends CommandOpMode {
     private DriveTrain s_Drivetrain;
     private Elevator s_Elevator;
     private Intake s_Intake;
-//    private Wrist s_Wrist;
-//    private Extension s_Extension;
+    private Wrist s_Wrist;
+    private Extension s_Extension;
 //    private Claw s_Claw;
 //    private Arm s_Arm;
 
     private TeleopDrive c_TeleopDrive;
     private PlacePiece c_PlacePiece;
+    private SmartIntake c_SmartIntake;
 
     @Override
     public void initialize() {
@@ -43,11 +45,8 @@ public class CommandTeleop extends CommandOpMode {
         s_Drivetrain = new DriveTrain(hardwareMap);
         s_Elevator = new Elevator(hardwareMap);
         s_Intake = new Intake(hardwareMap);
-//        s_Wrist = new Wrist(hardwareMap);
-//        s_Extension = new Extension(hardwareMap);
-
-
-
+        s_Wrist = new Wrist(hardwareMap);
+        s_Extension = new Extension(hardwareMap);
 
         c_TeleopDrive = new TeleopDrive(
                 s_Drivetrain,
@@ -59,12 +58,20 @@ public class CommandTeleop extends CommandOpMode {
                 m_driverOp
         );
 
-        register(s_Drivetrain, s_Elevator, s_Intake);
+        c_SmartIntake = new SmartIntake(
+                s_Intake,
+                s_Wrist,
+                s_Extension,
+                m_driverOp
+        );
+
+        register(s_Drivetrain, s_Elevator, s_Intake, s_Wrist, s_Extension);
 
         s_Drivetrain.setDefaultCommand(c_TeleopDrive);
         s_Elevator.setDefaultCommand(c_PlacePiece);
+        s_Intake.setDefaultCommand(c_SmartIntake);
 
-        schedule(c_TeleopDrive, c_PlacePiece);
+        schedule(c_TeleopDrive, c_PlacePiece, c_SmartIntake);
 
         telemetry.addData("Position", s_Elevator.getPosition());
         telemetry.update();
