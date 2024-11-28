@@ -60,4 +60,8 @@ public class Constants {
         public static final int exchange = 60;
     }
 
+    public static final class VisionConstants {
+        public static final int gain = 100;
+    }
+
 }
