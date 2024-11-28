@@ -11,17 +11,17 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 
 public class PlacePiece extends CommandBase {
-    Elevator s_Elevator;
-    Arm s_Arm;
-    Claw s_Claw;
+    private Elevator s_Elevator;
+    private Arm s_Arm;
+    private Claw s_Claw;
 
-    GamepadEx gamepad;
+    private GamepadEx gamepad;
 
     private ElapsedTime timer = new ElapsedTime();
 
     private int phase;
 
-    states state;
+    private elevatorStates state;
 
     public PlacePiece(Elevator s_Elevator, Arm s_Arm, Claw s_Claw, GamepadEx gamepad) {
         this.s_Elevator = s_Elevator;
@@ -40,7 +40,7 @@ public class PlacePiece extends CommandBase {
         //s_Claw.setClaw(Constants.ClawConstants.open);
         s_Elevator.enable();
 
-        state = states.IDLE;
+        state = elevatorStates.IDLE;
         phase = 0;
     }
 
@@ -50,16 +50,16 @@ public class PlacePiece extends CommandBase {
         gamepad.readButtons();
 
         if (gamepad.wasJustPressed(GamepadKeys.Button.X)) {
-            if (state == states.IDLE) {
-                state = states.EXTENDING;
+            if (state == elevatorStates.IDLE) {
+                state = elevatorStates.EXTENDING;
                 timer.reset();
                 phase = 0;
-            } else if (state == states.EXTENDING) {
-                state = states.RETRACTING;
+            } else if (state == elevatorStates.EXTENDING) {
+                state = elevatorStates.RETRACTING;
                 timer.reset();
                 phase = 0;
             } else {
-                state = states.EXTENDING;
+                state = elevatorStates.EXTENDING;
                 timer.reset();
                 phase = 0;
             }
@@ -88,14 +88,14 @@ public class PlacePiece extends CommandBase {
                         break;
                     case 1:
                         s_Elevator.setPosition(Constants.ElevatorConstants.exchange);
-                        state = states.IDLE;
+                        state = elevatorStates.IDLE;
                 }
                 break;
         }
 
     }
 
-    private enum states {
+    private enum elevatorStates {
         IDLE,
         EXTENDING,
         RETRACTING

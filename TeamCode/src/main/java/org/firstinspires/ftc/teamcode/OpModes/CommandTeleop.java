@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Extension;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 
-@TeleOp(name = "Ultimate Greasy")
+@TeleOp(name = "ultaimfiaojds Greasy")
 public class CommandTeleop extends CommandOpMode {
 
     private GamepadEx m_driverOp;

@@ -55,8 +55,8 @@ public class Constants {
     public static final class ElevatorConstants {
         public static final String elevator = "elevator0";
         public static final int highBasket = 2000;
-        public static final int lowBasket = 80;
-        public static final int exchange = 80;
+        public static final int lowBasket = 60;
+        public static final int exchange = 60;
     }
 
 }

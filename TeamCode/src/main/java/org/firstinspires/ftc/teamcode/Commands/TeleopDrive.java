@@ -35,7 +35,9 @@ public class TeleopDrive extends CommandBase {
     @Override
     public void execute() {
 
-        driveY = gamepad.getLeftY();
+        gamepad.readButtons();
+
+        driveY = -gamepad.getLeftY();
         driveX = gamepad.getLeftX();
         rotation = gamepad.getRightX();
 
@@ -59,5 +61,9 @@ public class TeleopDrive extends CommandBase {
         double backRightPower = (fieldOrientedY + fieldOrientedX - rotation) / denominator;
 
         m_DriveTrain.setPower(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
+
+        if (gamepad.wasJustPressed(GamepadKeys.Button.START)) {
+            m_DriveTrain.resetYaw();
+        }
     }
 }

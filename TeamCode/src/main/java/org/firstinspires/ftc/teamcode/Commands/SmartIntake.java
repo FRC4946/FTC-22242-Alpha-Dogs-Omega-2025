@@ -7,23 +7,20 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class SmartIntake extends CommandBase {
 
-    Intake s_Intake;
-    Wrist s_Wrist;
-    Extension s_Extension;
+    private Intake s_Intake;
+    private Wrist s_Wrist;
+    private Extension s_Extension;
 
-    GamepadEx gamepad;
-
-    Button intake;
+    private GamepadEx gamepad;
 
     private int phase;
-    private States state;
+    private intakeStates state;
 
     private ElapsedTime timer = new ElapsedTime();
 
@@ -42,7 +39,7 @@ public class SmartIntake extends CommandBase {
         s_Wrist.setAngle(Constants.WristConstants.transferAngle);
         s_Extension.setAngle(Constants.ExtensionConstants.retracted);
         phase = 0;
-        state = States.IDLING;
+        state = intakeStates.IDLING;
     }
 
     @Override
@@ -53,17 +50,17 @@ public class SmartIntake extends CommandBase {
         s_Intake.setIntakePower(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
 
         if (gamepad.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
-            phase = 0;
+            state = intakeStates.INTAKING;
             timer.reset();
-            state = States.EXTENDING;
-        } else if (gamepad.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
             phase = 0;
+        } else if (gamepad.wasJustPressed(GamepadKeys.Button.A)) {
+            state = intakeStates.RETURNING;
             timer.reset();
-            state = States.RETRACTING;
+            phase = 0;
         }
 
         switch (state) {
-            case EXTENDING:
+            case INTAKING:
                 switch (phase) {
                     case 0:
                         s_Wrist.setAngle(Constants.WristConstants.barAngle);
@@ -81,7 +78,7 @@ public class SmartIntake extends CommandBase {
                         break;
                 }
                 break;
-            case RETRACTING:
+            case RETURNING:
                 switch (phase) {
                     case 0:
                         s_Wrist.setAngle(Constants.WristConstants.barAngle);
@@ -97,12 +94,11 @@ public class SmartIntake extends CommandBase {
                 }
                 break;
         }
-
     }
 
-    private enum States {
-        EXTENDING,
-        RETRACTING,
+    private enum intakeStates {
+        INTAKING,
+        RETURNING,
         IDLING
     }
 }
