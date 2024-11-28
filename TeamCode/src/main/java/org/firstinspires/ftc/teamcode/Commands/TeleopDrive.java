@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.button.Button;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.Constants;
@@ -10,14 +15,14 @@ public class TeleopDrive extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final DriveTrain m_DriveTrain;
 
-    private double driveY, driveX, rotation;
+    private final GamepadEx gamepad;
 
-    public TeleopDrive(DriveTrain m_DriveTrain, double driveY, double driveX, double rotation) {
+    private double driveX, driveY, rotation;
+
+    public TeleopDrive(DriveTrain m_DriveTrain, GamepadEx gamepad) {
         this.m_DriveTrain = m_DriveTrain;
 
-        this.driveX = driveX;
-        this.driveY = driveY;
-        this.rotation = rotation;
+        this.gamepad = gamepad;
 
         addRequirements(m_DriveTrain);
     }
@@ -29,14 +34,17 @@ public class TeleopDrive extends CommandBase {
 
     @Override
     public void execute() {
-        double botHeading = m_DriveTrain.getHeading();
-        double headingRadians = Math.toRadians(botHeading);
 
+        driveY = gamepad.getLeftY();
+        driveX = gamepad.getLeftX();
+        rotation = gamepad.getRightX();
+
+        double botHeading = m_DriveTrain.getHeading();
 
         // Rotate the movement direction counter to the bot's rotation
 
-        double sin = Math.sin(-headingRadians);
-        double cos = Math.cos(-headingRadians);
+        double sin = Math.sin(-botHeading);
+        double cos = Math.cos(-botHeading);
 
         double fieldOrientedX = driveX * cos - driveY * sin;
         double fieldOrientedY = driveX * sin + driveY * cos;
@@ -51,10 +59,5 @@ public class TeleopDrive extends CommandBase {
         double backRightPower = (fieldOrientedY + fieldOrientedX - rotation) / denominator;
 
         m_DriveTrain.setPower(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return false;
     }
 }

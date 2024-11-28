@@ -5,12 +5,12 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Constants.DriveTrainConstants;
+
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
 public class DriveTrain extends SubsystemBase {
 
@@ -19,9 +19,7 @@ public class DriveTrain extends SubsystemBase {
     private final DcMotor backLeft2;
     private final DcMotor backRight3;
 
-    private final BNO055IMU imu;
-
-    private double yawOffset;
+    private final IMU imu;
 
     public DriveTrain(HardwareMap hardwareMap) {
         frontLeft0 = hardwareMap.get(DcMotor.class, DriveTrainConstants.frontLeftMotor);
@@ -39,12 +37,18 @@ public class DriveTrain extends SubsystemBase {
         backLeft2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        imu.initialize(parameters);
+        frontLeft0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        yawOffset = imu.getAngularOrientation().firstAngle - DriveTrainConstants.controlHubOffset;
+        imu = hardwareMap.get(IMU.class, "imu");
+        // Adjust the orientation parameters to match your robot
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
+        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
+        imu.initialize(parameters);
     }
 
     public void setPower(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
@@ -55,20 +59,10 @@ public class DriveTrain extends SubsystemBase {
     }
 
     /**
-     * Raw heading of the robot before yaw offset is applied
-     *
-     * @return heading of the robot
-     */
-    public double getRawHeading() {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        return angles.firstAngle;
-    }
-
-    /**
      * Updates the yaw offset to the current heading
      */
     public void resetYaw() {
-        yawOffset = getRawHeading() - DriveTrainConstants.controlHubOffset;
+        imu.resetYaw();
     }
 
     /**
@@ -77,33 +71,7 @@ public class DriveTrain extends SubsystemBase {
      * @return adjusted heading of the robot
      */
     public double getHeading() {
-        double heading = getRawHeading() - yawOffset;
-
-        if (heading > 180) {
-            heading -= 360;
-        }
-        if (heading < -180) {
-            heading += 360;
-        }
-
-        return heading;
-    }
-
-//    public void periodic(Telemetry telemetry) {
-//        telemetry.addLine("Drive train");
-//        telemetry.addData("Heading: ", getHeading());
-//
-//        telemetry.addData("Front Left Power: ", frontLeft0.getPower());
-//
-//        telemetry.addData("Front Right Power: ", frontRight1.getPower());
-//
-//        telemetry.addData("Back Left Power: ", backLeft2.getPower());
-//
-//        telemetry.addData("Back Right Power: ", backRight3.getPower());
-//    }
-    @Override
-    public void periodic() {
-
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
     }
 
 }

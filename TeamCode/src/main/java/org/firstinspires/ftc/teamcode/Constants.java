@@ -14,8 +14,6 @@ public class Constants {
         public static final double strafingBalancer = 1.1;
 
         public static final double ticksPerRevolution = 537.6; //Ticks per revolution on the NeveRest Orbital 20 Gearmotor
-
-        public static final double controlHubOffset = 0;
     }
 
     public static final class WristConstants {
@@ -47,7 +45,8 @@ public class Constants {
     }
 
     public static final class ClawConstants {
-        public static final String claw = "claw5";
+        public static final String leftClaw = "leftClaw0";
+        public static final String rightClaw = "rightClaw1";
         public static final double open = 1;    //TODO FIND THIS
         public static final double closed = 0;  //TODO FIND THIS TANGLE TOO
     }

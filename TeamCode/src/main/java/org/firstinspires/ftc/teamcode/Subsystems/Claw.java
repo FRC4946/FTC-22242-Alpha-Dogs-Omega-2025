@@ -1,23 +1,33 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class Claw extends SubsystemBase {
-    private final Servo claw;
+    private final ServoEx leftClaw;
+    private final ServoEx rightClaw;
 
     public Claw(HardwareMap hardwareMap) {
-        claw = hardwareMap.get(Servo.class, Constants.ClawConstants.claw);
+        leftClaw = hardwareMap.get(ServoEx.class, Constants.ClawConstants.leftClaw);
+        rightClaw = hardwareMap.get(ServoEx.class, Constants.ClawConstants.rightClaw);
+
+        leftClaw.setInverted(true);
+        rightClaw.setInverted(false);
     }
 
     public void setClaw(double angle) {
-        claw.setPosition(angle);
+        leftClaw.turnToAngle(angle);
+        rightClaw.turnToAngle(angle);
     }
 
-    public double getAngle() {
-        return claw.getPosition();
+    public double getLeftAngle() {
+        return leftClaw.getAngle();
+    }
+
+    public double getRightAngle() {
+        return rightClaw.getAngle();
     }
 }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 public class Elevator extends SubsystemBase {
 
     private final DcMotor elevator;
+
     private int power;
 
     public Elevator(HardwareMap hardwareMap) {
@@ -18,6 +20,7 @@ public class Elevator extends SubsystemBase {
 
         elevator.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         power = 0;
