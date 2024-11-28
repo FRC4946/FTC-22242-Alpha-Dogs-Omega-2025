@@ -42,13 +42,13 @@ public class Constants {
     public static final class ArmConstants {
         public static final String arm = "arm4";
         public static final double exchangeAngle = 0.98; //TODO FIND THIS VALUE
-        public static final double dropAngle = 0.4; //TODO FIND THIS VALUE
+        public static final double dropAngle = 0.35; //TODO FIND THIS VALUE
     }
 
     public static final class ClawConstants {
         public static final String leftClaw = "leftClaw0";
         public static final String rightClaw = "rightClaw1";
-        public static final double open = 1;    //TODO FIND THIS
+        public static final double open = 0.05;    //TODO FIND THIS
         public static final double closed = 0;  //TODO FIND THIS TANGLE TOO
     }
 

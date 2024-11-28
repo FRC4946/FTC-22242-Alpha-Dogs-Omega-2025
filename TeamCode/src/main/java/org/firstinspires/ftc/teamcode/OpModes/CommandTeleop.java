@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
+import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Extension;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
+import org.jetbrains.annotations.NotNull;
 
 @TeleOp(name = "ultaimfiaojds Greasy")
 public class CommandTeleop extends CommandOpMode {
@@ -75,7 +77,9 @@ public class CommandTeleop extends CommandOpMode {
         s_Elevator.setDefaultCommand(c_PlacePiece);
         s_Intake.setDefaultCommand(c_SmartIntake);
 
-        schedule(c_TeleopDrive, c_PlacePiece, c_SmartIntake);
+//        schedule(c_TeleopDrive);
+        schedule(c_SmartIntake);
+//        schedule(c_PlacePiece);
 
         telemetry.addData("Position", s_Elevator.getPosition());
         telemetry.update();

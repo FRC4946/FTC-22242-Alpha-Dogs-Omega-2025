@@ -35,9 +35,9 @@ public class TeleopDrive extends CommandBase {
     @Override
     public void execute() {
 
-        gamepad.readButtons();
+        //gamepad.readButtons();
 
-        driveY = -gamepad.getLeftY();
+        driveY = gamepad.getLeftY();
         driveX = gamepad.getLeftX();
         rotation = gamepad.getRightX();
 

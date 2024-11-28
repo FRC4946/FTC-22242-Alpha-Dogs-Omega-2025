@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
-
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Extension;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
@@ -31,15 +30,15 @@ public class SmartIntake extends CommandBase {
 
         this.gamepad = gamepad;
 
-        addRequirements(s_Intake, s_Wrist, s_Extension);
+        addRequirements(s_Intake);
     }
 
     @Override
     public void initialize() {
         s_Wrist.setAngle(Constants.WristConstants.transferAngle);
         s_Extension.setAngle(Constants.ExtensionConstants.retracted);
-        phase = 0;
         state = intakeStates.IDLING;
+        phase = 0;
     }
 
     @Override
@@ -50,13 +49,19 @@ public class SmartIntake extends CommandBase {
         s_Intake.setIntakePower(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
 
         if (gamepad.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
-            state = intakeStates.INTAKING;
-            timer.reset();
-            phase = 0;
-        } else if (gamepad.wasJustPressed(GamepadKeys.Button.A)) {
-            state = intakeStates.RETURNING;
-            timer.reset();
-            phase = 0;
+            if (state == intakeStates.IDLING) {
+                state = intakeStates.INTAKING;
+                timer.reset();
+                phase = 0;
+            } else if (state == intakeStates.INTAKING) {
+                state = intakeStates.RETURNING;
+                timer.reset();
+                phase = 0;
+            } else {
+                state = intakeStates.INTAKING;
+                timer.reset();
+                phase = 0;
+            }
         }
 
         switch (state) {

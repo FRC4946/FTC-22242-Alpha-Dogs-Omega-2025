@@ -37,7 +37,7 @@ public class PlacePiece extends CommandBase {
     public void initialize() {
         s_Elevator.setPosition(Constants.ElevatorConstants.exchange);
         s_Arm.setAngle(Constants.ArmConstants.exchangeAngle);
-        //s_Claw.setClaw(Constants.ClawConstants.open);
+        s_Claw.setClaw(Constants.ClawConstants.open);
         s_Elevator.enable();
 
         state = elevatorStates.IDLE;
@@ -47,7 +47,7 @@ public class PlacePiece extends CommandBase {
     @Override
     public void execute() {
 
-        gamepad.readButtons();
+        //gamepad.readButtons();
 
         if (gamepad.wasJustPressed(GamepadKeys.Button.X)) {
             if (state == elevatorStates.IDLE) {
@@ -69,7 +69,7 @@ public class PlacePiece extends CommandBase {
             case EXTENDING:
                 switch (phase) {
                     case 0:
-                        //s_Claw.setClaw(Constants.ClawConstants.closed);
+                        s_Claw.setClaw(Constants.ClawConstants.closed);
                         phase += timer.seconds() > 0.3 ? 1 : 0;
                         break;
                     case 1:
@@ -91,6 +91,12 @@ public class PlacePiece extends CommandBase {
                         state = elevatorStates.IDLE;
                 }
                 break;
+            case IDLE:
+                s_Claw.setClaw(Constants.ClawConstants.open);
+        }
+
+        if(gamepad.wasJustPressed(GamepadKeys.Button.A)) {
+            s_Claw.setClaw(Constants.ClawConstants.open);
         }
 
     }
