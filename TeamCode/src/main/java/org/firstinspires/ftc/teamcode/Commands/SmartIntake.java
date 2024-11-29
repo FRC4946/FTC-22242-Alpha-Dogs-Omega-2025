@@ -61,40 +61,42 @@ public class SmartIntake extends CommandBase {
 
         s_Intake.setIntakePower(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
 
-        if (s_ColourSensor.hasPiece().equals("Nothing")) {
+        //if (s_ColourSensor.hasPiece().equals("Nothing")) {
             if (gamepad.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
                 if (state == intakeStates.IDLING) {
-                    state = intakeStates.INTAKING;
+                    state = intakeStates.EXTENDING;
                     timer.reset();
                     phase = 0;
-                } else if (state == intakeStates.INTAKING) {
+                } else if (state == intakeStates.EXTENDING) {
                     state = intakeStates.RETURNING;
                     timer.reset();
                     phase = 0;
                 } else {
-                    state = intakeStates.INTAKING;
+                    state = intakeStates.EXTENDING;
                     timer.reset();
                     phase = 0;
                 }
             }
-        } else {
-            if (s_ColourSensor.hasPiece().equals(alliance) || s_ColourSensor.hasPiece().equals("Yellow")) {
-                state = intakeStates.RETURNING;
-                timer.reset();
-                phase = 0;
-            } else {
-                state = intakeStates.OUTTAKING;
-                timer.reset();
-                phase = 0;
-            }
-        }
+//        } else {
+//            if (s_ColourSensor.hasPiece().equals(alliance) || s_ColourSensor.hasPiece().equals("Yellow")) {
+//                state = intakeStates.RETURNING;
+//                timer.reset();
+//                phase = 0;
+//            } else {
+//                state = intakeStates.OUTTAKING;
+//                timer.reset();
+//                phase = 0;
+//            }
+//        }
 
 
         switch (state) {
-            case INTAKING:
+            case EXTENDING:
                 switch (phase) {
                     case 0:
-
+                        if(s_Extension.getAngle() == Constants.ExtensionConstants.extended) {
+                            phase = 2;
+                        }
                         s_Wrist.setAngle(Constants.WristConstants.barAngle);
                         phase += timer.seconds() > 0.5 ? 1 : 0;
                         break;
@@ -106,15 +108,18 @@ public class SmartIntake extends CommandBase {
                     case 2:
                         s_Wrist.setAngle(Constants.WristConstants.transferAngle);
                         s_Extension.setAngle(Constants.ExtensionConstants.extended);
-                        s_Intake.setIntakePower(1);
                         break;
                 }
                 break;
             case RETURNING:
                 switch (phase) {
                     case 0:
-                        s_Wrist.setAngle(Constants.WristConstants.barAngle);
-                        phase += timer.seconds() > 0.4 ? 1 : 0;
+                        if (!(s_Extension.getAngle() == Constants.ExtensionConstants.retracted)) {
+                            s_Wrist.setAngle(Constants.WristConstants.barAngle);
+                            phase += timer.seconds() > 0.4 ? 1 : 0;
+                        } else {
+                            phase = 2;
+                        }
                         break;
                     case 1:
                         s_Extension.setAngle(Constants.ExtensionConstants.retracted);
@@ -122,7 +127,13 @@ public class SmartIntake extends CommandBase {
                         break;
                     case 2:
                         s_Wrist.setAngle(Constants.WristConstants.transferAngle);
-
+                }
+                break;
+            case INTAKING:
+                switch (phase) {
+                    case 0:
+                        s_Intake.setIntakePower(1);
+                        break;
                 }
                 break;
             case OUTTAKING:
@@ -132,21 +143,28 @@ public class SmartIntake extends CommandBase {
                         phase += timer.seconds() > 1 ? 1 : 0;
                         break;
                     case 1:
-                        state = intakeStates.IDLING;
+                        state = intakeStates.INTAKING;
                         timer.reset();
                         phase = 0;
                         break;
                 }
                 break;
+            case IDLING:
+                s_Wrist.setAngle(s_Wrist.getLeftAngle());
+                s_Extension.setAngle(s_Extension.getAngle());
+                break;
         }
 
         telemetry.addData("Color", s_ColourSensor.hasPiece());
+        telemetry.addData("Alliance: ", alliance);
+        telemetry.addData("Alliance Piece", s_ColourSensor.hasPiece().equals(alliance));
         telemetry.update();
     }
 
     private enum intakeStates {
         INTAKING,
         OUTTAKING,
+        EXTENDING,
         RETURNING,
         IDLING
     }

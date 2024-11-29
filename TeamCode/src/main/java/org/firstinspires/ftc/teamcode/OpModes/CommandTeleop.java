@@ -1,16 +1,10 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
-import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.Subsystem;
-import com.arcrobotics.ftclib.command.button.Button;
-import com.arcrobotics.ftclib.command.button.GamepadButton;
-import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Commands.PlacePiece;
+import org.firstinspires.ftc.teamcode.Commands.SmartElevator;
 import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleopDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
@@ -21,7 +15,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Extension;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
-import org.jetbrains.annotations.NotNull;
 
 @TeleOp(name = "Greasy Teleop")
 public class CommandTeleop extends CommandOpMode {
@@ -39,13 +32,15 @@ public class CommandTeleop extends CommandOpMode {
     private ColourSensor s_ColourSensor;
 
     private TeleopDrive c_TeleopDrive;
-    private PlacePiece c_PlacePiece;
+    private SmartElevator c_SmartElevator;
     private SmartIntake c_SmartIntake;
 
     private String allianceColour;
 
     @Override
     public void initialize() {
+
+        allianceColour = "Blue";
 
         m_driverOp = new GamepadEx(gamepad1);
 
@@ -64,7 +59,7 @@ public class CommandTeleop extends CommandOpMode {
                 m_driverOp
         );
 
-        c_PlacePiece = new PlacePiece(
+        c_SmartElevator = new SmartElevator(
                 s_Elevator,
                 s_Arm,
                 s_Claw,
@@ -84,32 +79,12 @@ public class CommandTeleop extends CommandOpMode {
         register(s_Drivetrain, s_Elevator, s_Intake, s_Wrist, s_Extension);
 
         s_Drivetrain.setDefaultCommand(c_TeleopDrive);
-        s_Elevator.setDefaultCommand(c_PlacePiece);
+        s_Elevator.setDefaultCommand(c_SmartElevator);
         s_Intake.setDefaultCommand(c_SmartIntake);
 
 //        schedule(c_TeleopDrive);
         schedule(c_SmartIntake);
 //        schedule(c_PlacePiece);
 
-        allianceColour = "Blue";
     }
-
-//    @Override
-//    public void run() {
-//
-//        //m_driverOp.readButtons();
-//
-//        if (!isStarted()) {
-//            if (m_driverOp.wasJustPressed(GamepadKeys.Button.B)) {
-//                allianceColour = allianceColour.equals("Blue") ? "Red" : "Blue";
-//            }
-//        }
-//
-//        telemetry.addData("(Press B) Alliance Colour: ", allianceColour);
-//        telemetry.addLine("Vision");
-//        telemetry.addData("Hue:", s_ColourSensor.getHue());
-//        telemetry.addData("Position", s_Elevator.getPosition());
-//        telemetry.update();
-//
-//    }
 }

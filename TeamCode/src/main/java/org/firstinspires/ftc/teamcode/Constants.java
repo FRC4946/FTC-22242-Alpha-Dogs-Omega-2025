@@ -36,25 +36,29 @@ public class Constants {
     public static final class ExtensionConstants {
         public static final String extension = "extension3";
         public static final double retracted = 0.21;
-        public static final double clearBar = 0.14;
+        public static final double clearBar = 0.11;
         public static final double extended = 0;
     }
 
     public static final class ArmConstants {
         public static final String arm = "arm4";
-        public static final double exchangeAngle = 0.98; //TODO FIND THIS VALUE
-        public static final double dropAngle = 0.35; //TODO FIND THIS VALUE
+        public static final double exchangeAngle = 0.98;
+        public static final double dropAngle = 0.35;
+        public static final double grabSpecimenAngle = 7; //TODO FIND THESE VALUE
+        public static final double raiseSpecimenAngle = 0.5;
+        public static final double placeSpecimenAngle = 0.6;
+
     }
 
     public static final class ClawConstants {
         public static final String leftClaw = "claw1";
-        public static final double open = 0.1;    //TODO FIND THIS
-        public static final double closed = 0;  //TODO FIND THIS TANGLE TOO
+        public static final double open = 0.1;
+        public static final double closed = 0;
     }
 
     public static final class ElevatorConstants {
         public static final String elevator = "elevator0";
-        public static final int highBasket = 2000;
+        public static final int highBasket = 1700;
         public static final int lowBasket = 60;
         public static final int exchange = 60;
     }
