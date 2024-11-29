@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 import org.jetbrains.annotations.NotNull;
 
-@TeleOp(name = "Greasy Teleop")
+@TeleOp(name = "oiui Teleop")
 public class CommandTeleop extends CommandOpMode {
 
     private GamepadEx m_driverOp;
@@ -93,22 +93,22 @@ public class CommandTeleop extends CommandOpMode {
         allianceColour = "Blue";
     }
 
-    @Override
-    public void run() {
-
-        m_driverOp.readButtons();
-
-        if (!isStarted()) {
-            if (m_driverOp.wasJustPressed(GamepadKeys.Button.B)) {
-                allianceColour = allianceColour.equals("Blue") ? "Red" : "Blue";
-            }
-        }
-
-        telemetry.addData("(Press B) Alliance Colour: ", allianceColour);
-        telemetry.addLine("Vision");
-        telemetry.addData("Hue:", s_ColourSensor.getHue());
-        telemetry.addData("Position", s_Elevator.getPosition());
-        telemetry.update();
-
-    }
+//    @Override
+//    public void run() {
+//
+//        //m_driverOp.readButtons();
+//
+//        if (!isStarted()) {
+//            if (m_driverOp.wasJustPressed(GamepadKeys.Button.B)) {
+//                allianceColour = allianceColour.equals("Blue") ? "Red" : "Blue";
+//            }
+//        }
+//
+//        telemetry.addData("(Press B) Alliance Colour: ", allianceColour);
+//        telemetry.addLine("Vision");
+//        telemetry.addData("Hue:", s_ColourSensor.getHue());
+//        telemetry.addData("Position", s_Elevator.getPosition());
+//        telemetry.update();
+//
+//    }
 }

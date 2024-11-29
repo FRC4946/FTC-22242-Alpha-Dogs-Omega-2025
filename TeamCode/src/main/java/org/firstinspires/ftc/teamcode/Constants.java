@@ -47,8 +47,7 @@ public class Constants {
     }
 
     public static final class ClawConstants {
-        public static final String leftClaw = "leftClaw0";
-        public static final String rightClaw = "rightClaw1";
+        public static final String leftClaw = "claw1";
         public static final double open = 0.05;    //TODO FIND THIS
         public static final double closed = 0;  //TODO FIND THIS TANGLE TOO
     }
@@ -62,12 +61,11 @@ public class Constants {
 
     public static final class VisionConstants {
         public static final int gain = 100;
-        public static final int neutralHue = 80;
-        public static final int redHue = 20;
-        public static final int yellowHue = 160;
-        public static final int blueHue = 220;
+        public static final int neutralHue = 162;
+        public static final int redHue = 24;
+        public static final int yellowHue = 82;
+        public static final int blueHue = 223;
         public static final int hueTolerance = 10;
-        //TODO TUNE ALL OF THESE HUES
     }
 
 }

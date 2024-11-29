@@ -49,8 +49,8 @@ public class ColourSensor {
         return value;
     }
 
-    public boolean isColor(Color color) {
-        return
-    }
+//    public boolean isColor(String color) {
+//        return
+//    }
 
 }
