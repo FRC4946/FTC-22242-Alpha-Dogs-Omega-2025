@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 import org.jetbrains.annotations.NotNull;
 
-@TeleOp(name = "oiui Teleop")
+@TeleOp(name = "Greasy Teleop")
 public class CommandTeleop extends CommandOpMode {
 
     private GamepadEx m_driverOp;
@@ -77,7 +77,8 @@ public class CommandTeleop extends CommandOpMode {
                 s_Extension,
                 s_ColourSensor,
                 m_driverOp,
-                allianceColour
+                allianceColour,
+                telemetry
         );
 
         register(s_Drivetrain, s_Elevator, s_Intake, s_Wrist, s_Extension);

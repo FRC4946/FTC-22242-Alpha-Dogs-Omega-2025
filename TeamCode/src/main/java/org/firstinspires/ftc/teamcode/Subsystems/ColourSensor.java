@@ -36,12 +36,14 @@ public class ColourSensor {
         hue = JavaUtil.rgbToHue(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
         return hue;
     }
+
     public float getSaturation() {
         myNormalizedColors = ((NormalizedColorSensor) colourSensor).getNormalizedColors();
         myColor = myNormalizedColors.toColor();
         saturation = JavaUtil.rgbToSaturation(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
         return saturation;
     }
+
     public float getValue() {
         myNormalizedColors = ((NormalizedColorSensor) colourSensor).getNormalizedColors();
         myColor = myNormalizedColors.toColor();
@@ -49,8 +51,18 @@ public class ColourSensor {
         return value;
     }
 
-//    public boolean isColor(String color) {
-//        return
-//    }
+    public String hasPiece() {
+        String colour;
+        if ((getHue() < Constants.VisionConstants.blueHue + 10) && (getHue() > Constants.VisionConstants.blueHue - 10)) {
+            colour = "Blue";
+        } else if ((getHue() < Constants.VisionConstants.redHue + 10) && (getHue() > Constants.VisionConstants.redHue - 10)) {
+            colour = "Red";
+        } else if ((getHue() < Constants.VisionConstants.yellowHue + 10) && (getHue() > Constants.VisionConstants.yellowHue - 10)) {
+            colour = "Yellow";
+        } else {
+            colour = "Nothing";
+        }
+        return colour;
+    }
 
 }

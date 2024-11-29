@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.ColourSensor;
 import org.firstinspires.ftc.teamcode.Subsystems.Extension;
@@ -17,7 +18,7 @@ public class SmartIntake extends CommandBase {
     private Wrist s_Wrist;
     private Extension s_Extension;
 
-    private ColourSensor colourSensor;
+    private ColourSensor s_ColourSensor;
 
     private GamepadEx gamepad;
 
@@ -25,16 +26,22 @@ public class SmartIntake extends CommandBase {
     private intakeStates state;
     private ElapsedTime timer = new ElapsedTime();
 
-    private String Alliance;
+    private String alliance;
 
-    public SmartIntake(Intake s_Intake, Wrist s_Wrist, Extension s_Extension, ColourSensor colourSensor, GamepadEx gamepad, String alliance) {
+    private Telemetry telemetry;
+
+    public SmartIntake(Intake s_Intake, Wrist s_Wrist, Extension s_Extension, ColourSensor s_ColourSensor, GamepadEx gamepad, String alliance, Telemetry telemetry) {
         this.s_Intake = s_Intake;
         this.s_Wrist = s_Wrist;
         this.s_Extension = s_Extension;
 
-        this.colourSensor = colourSensor;
+        this.s_ColourSensor = s_ColourSensor;
 
         this.gamepad = gamepad;
+
+        this.alliance = alliance;
+
+        this.telemetry = telemetry;
 
         addRequirements(s_Intake);
     }
@@ -54,21 +61,34 @@ public class SmartIntake extends CommandBase {
 
         s_Intake.setIntakePower(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
 
-        if (gamepad.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
-            if (state == intakeStates.IDLING) {
-                state = intakeStates.INTAKING;
-                timer.reset();
-                phase = 0;
-            } else if (state == intakeStates.INTAKING) {
+        if (s_ColourSensor.hasPiece().equals("Nothing")) {
+            if (gamepad.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
+                if (state == intakeStates.IDLING) {
+                    state = intakeStates.INTAKING;
+                    timer.reset();
+                    phase = 0;
+                } else if (state == intakeStates.INTAKING) {
+                    state = intakeStates.RETURNING;
+                    timer.reset();
+                    phase = 0;
+                } else {
+                    state = intakeStates.INTAKING;
+                    timer.reset();
+                    phase = 0;
+                }
+            }
+        } else {
+            if (s_ColourSensor.hasPiece().equals(alliance) || s_ColourSensor.hasPiece().equals("Yellow")) {
                 state = intakeStates.RETURNING;
                 timer.reset();
                 phase = 0;
             } else {
-                state = intakeStates.INTAKING;
+                state = intakeStates.OUTTAKING;
                 timer.reset();
                 phase = 0;
             }
         }
+
 
         switch (state) {
             case INTAKING:
@@ -104,11 +124,32 @@ public class SmartIntake extends CommandBase {
 
                 }
                 break;
+            case OUTTAKING:
+                switch (phase) {
+                    case 0:
+                        if(s_Extension.getAngle() == Constants.ExtensionConstants.retracted) {
+                            s_Intake.setIntakePower(-1);
+                        } else {
+                            s_Intake.setIntakePower(1);
+                        }
+                        phase += timer.seconds() > 1 ? 1 : 0;
+                        break;
+                    case 1:
+                        state = intakeStates.INTAKING;
+                        timer.reset();
+                        phase = 0;
+                        break;
+                }
+                break;
         }
+
+        telemetry.addData("Color", s_ColourSensor.hasPiece());
+        telemetry.update();
     }
 
     private enum intakeStates {
         INTAKING,
+        OUTTAKING,
         RETURNING,
         IDLING
     }
