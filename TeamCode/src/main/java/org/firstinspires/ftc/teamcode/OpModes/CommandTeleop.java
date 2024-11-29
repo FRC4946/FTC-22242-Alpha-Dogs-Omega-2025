@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 public class CommandTeleop extends CommandOpMode {
 
     private GamepadEx m_driverOp;
+    private GamepadEx m_OperatorOp;
 
     private DriveTrain s_Drivetrain;
     private Elevator s_Elevator;
@@ -43,6 +44,7 @@ public class CommandTeleop extends CommandOpMode {
         allianceColour = "Blue";
 
         m_driverOp = new GamepadEx(gamepad1);
+        m_OperatorOp = new GamepadEx(gamepad2);
 
         s_Drivetrain = new DriveTrain(hardwareMap);
         s_Elevator = new Elevator(hardwareMap);
@@ -72,6 +74,7 @@ public class CommandTeleop extends CommandOpMode {
                 s_Extension,
                 s_ColourSensor,
                 m_driverOp,
+                m_OperatorOp,
                 allianceColour,
                 telemetry
         );

@@ -44,7 +44,7 @@ public class Constants {
         public static final String arm = "arm4";
         public static final double exchangeAngle = 0.98;
         public static final double dropAngle = 0.35;
-        public static final double grabSpecimenAngle = 7; //TODO FIND THESE VALUE
+        public static final double grabSpecimenAngle = 0.7; //TODO FIND THESE VALUE
         public static final double raiseSpecimenAngle = 0.5;
         public static final double placeSpecimenAngle = 0.6;
 
@@ -58,7 +58,7 @@ public class Constants {
 
     public static final class ElevatorConstants {
         public static final String elevator = "elevator0";
-        public static final int highBasket = 1700;
+        public static final int highBasket = 1450;
         public static final int lowBasket = 60;
         public static final int exchange = 60;
     }

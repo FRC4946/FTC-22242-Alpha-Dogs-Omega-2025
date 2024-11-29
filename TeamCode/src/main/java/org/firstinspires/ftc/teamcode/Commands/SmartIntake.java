@@ -20,7 +20,8 @@ public class SmartIntake extends CommandBase {
 
     private ColourSensor s_ColourSensor;
 
-    private GamepadEx gamepad;
+    private GamepadEx driver;
+    private GamepadEx operator;
 
     private int phase;
     private intakeStates state;
@@ -30,14 +31,17 @@ public class SmartIntake extends CommandBase {
 
     private Telemetry telemetry;
 
-    public SmartIntake(Intake s_Intake, Wrist s_Wrist, Extension s_Extension, ColourSensor s_ColourSensor, GamepadEx gamepad, String alliance, Telemetry telemetry) {
+    private double intakeSpeed;
+
+    public SmartIntake(Intake s_Intake, Wrist s_Wrist, Extension s_Extension, ColourSensor s_ColourSensor, GamepadEx driver,GamepadEx operator, String alliance, Telemetry telemetry) {
         this.s_Intake = s_Intake;
         this.s_Wrist = s_Wrist;
         this.s_Extension = s_Extension;
 
         this.s_ColourSensor = s_ColourSensor;
 
-        this.gamepad = gamepad;
+        this.driver = driver;
+        this.operator = operator;
 
         this.alliance = alliance;
 
@@ -59,10 +63,14 @@ public class SmartIntake extends CommandBase {
 
         //gamepad.readButtons();
 
-        s_Intake.setIntakePower(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
+        if(operator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - operator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) != 0){
+            s_Intake.setIntakePower(operator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - operator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
+        } else {
+            s_Intake.setIntakePower(driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
+        }
 
         //if (s_ColourSensor.hasPiece().equals("Nothing")) {
-            if (gamepad.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
+            if (driver.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
                 if (state == intakeStates.IDLING) {
                     state = intakeStates.EXTENDING;
                     timer.reset();
@@ -106,7 +114,7 @@ public class SmartIntake extends CommandBase {
                         phase += timer.seconds() > 1 ? 1 : 0;
                         break;
                     case 2:
-                        s_Wrist.setAngle(Constants.WristConstants.transferAngle);
+                        s_Wrist.setAngle(Constants.WristConstants.intakeAngle);
                         s_Extension.setAngle(Constants.ExtensionConstants.extended);
                         break;
                 }
