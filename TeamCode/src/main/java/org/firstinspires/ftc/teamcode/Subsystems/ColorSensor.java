@@ -23,16 +23,29 @@ public class ColorSensor {
     float value;
 
     public ColorSensor(HardwareMap hardwareMap) {
-        colourSensor = hardwareMap.get(com.qualcomm.robotcore.hardware.ColorSensor.class, "colorSensor1");
+        colourSensor = hardwareMap.get(com.qualcomm.robotcore.hardware.ColorSensor.class, "colourSensor1");
 
         gain = Constants.VisionConstants.gain;
         ((NormalizedColorSensor) colourSensor).setGain(gain);
     }
 
-    public float getColor() {
+    public float getHue() {
         myNormalizedColors = ((NormalizedColorSensor) colourSensor).getNormalizedColors();
         myColor = myNormalizedColors.toColor();
-        return  JavaUtil.rgbToHue(Color.red(myColor);
+        hue = JavaUtil.rgbToHue(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
+        return hue;
+    }
+    public float getSaturation() {
+        myNormalizedColors = ((NormalizedColorSensor) colourSensor).getNormalizedColors();
+        myColor = myNormalizedColors.toColor();
+        saturation = JavaUtil.rgbToSaturation(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
+        return saturation;
+    }
+    public float getValue() {
+        myNormalizedColors = ((NormalizedColorSensor) colourSensor).getNormalizedColors();
+        myColor = myNormalizedColors.toColor();
+        value = JavaUtil.rgbToValue(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
+        return value;
     }
 
 }
