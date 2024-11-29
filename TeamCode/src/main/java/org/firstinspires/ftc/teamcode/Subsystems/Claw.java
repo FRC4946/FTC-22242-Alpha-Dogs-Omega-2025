@@ -12,7 +12,7 @@ public class Claw extends SubsystemBase {
     public Claw(HardwareMap hardwareMap) {
         claw = hardwareMap.get(Servo.class, Constants.ClawConstants.leftClaw);
 
-        claw.setDirection(Servo.Direction.REVERSE);
+        claw.setDirection(Servo.Direction.FORWARD);
     }
 
     public void setClaw(double angle) {

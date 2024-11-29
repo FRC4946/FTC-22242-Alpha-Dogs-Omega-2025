@@ -35,7 +35,7 @@ public class Constants {
 
     public static final class ExtensionConstants {
         public static final String extension = "extension3";
-        public static final double retracted = 0.2;
+        public static final double retracted = 0.21;
         public static final double clearBar = 0.14;
         public static final double extended = 0;
     }
@@ -48,7 +48,7 @@ public class Constants {
 
     public static final class ClawConstants {
         public static final String leftClaw = "claw1";
-        public static final double open = 0.05;    //TODO FIND THIS
+        public static final double open = 0.1;    //TODO FIND THIS
         public static final double closed = 0;  //TODO FIND THIS TANGLE TOO
     }
 
