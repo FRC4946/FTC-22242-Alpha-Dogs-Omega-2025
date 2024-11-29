@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
 import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.Subsystems.ColourSensor;
 import org.firstinspires.ftc.teamcode.Subsystems.Extension;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
@@ -16,17 +17,22 @@ public class SmartIntake extends CommandBase {
     private Wrist s_Wrist;
     private Extension s_Extension;
 
+    private ColourSensor colourSensor;
+
     private GamepadEx gamepad;
 
     private int phase;
     private intakeStates state;
-
     private ElapsedTime timer = new ElapsedTime();
 
-    public SmartIntake(Intake s_Intake, Wrist s_Wrist, Extension s_Extension, GamepadEx gamepad) {
+    private String Alliance;
+
+    public SmartIntake(Intake s_Intake, Wrist s_Wrist, Extension s_Extension, ColourSensor colourSensor, GamepadEx gamepad, String alliance) {
         this.s_Intake = s_Intake;
         this.s_Wrist = s_Wrist;
         this.s_Extension = s_Extension;
+
+        this.colourSensor = colourSensor;
 
         this.gamepad = gamepad;
 
@@ -44,7 +50,7 @@ public class SmartIntake extends CommandBase {
     @Override
     public void execute() {
 
-        gamepad.readButtons();
+        //gamepad.readButtons();
 
         s_Intake.setIntakePower(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
 

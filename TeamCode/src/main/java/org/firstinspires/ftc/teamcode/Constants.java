@@ -62,6 +62,12 @@ public class Constants {
 
     public static final class VisionConstants {
         public static final int gain = 100;
+        public static final int neutralHue = 80;
+        public static final int redHue = 20;
+        public static final int yellowHue = 160;
+        public static final int blueHue = 220;
+        public static final int hueTolerance = 10;
+        //TODO TUNE ALL OF THESE HUES
     }
 
 }

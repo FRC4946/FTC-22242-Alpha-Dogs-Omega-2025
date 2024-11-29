@@ -7,27 +7,20 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class Claw extends SubsystemBase {
-    private final Servo leftClaw;
-    private final Servo rightClaw;
+    private final Servo claw;
 
     public Claw(HardwareMap hardwareMap) {
-        leftClaw = hardwareMap.get(Servo.class, Constants.ClawConstants.leftClaw);
-        rightClaw = hardwareMap.get(Servo.class, Constants.ClawConstants.rightClaw);
+        claw = hardwareMap.get(Servo.class, Constants.ClawConstants.leftClaw);
 
-        leftClaw.setDirection(Servo.Direction.REVERSE);
-        rightClaw.setDirection(Servo.Direction.FORWARD);
+        claw.setDirection(Servo.Direction.REVERSE);
     }
 
     public void setClaw(double angle) {
-        leftClaw.setPosition(angle);
-        rightClaw.setPosition(angle);
+        claw.setPosition(angle);
     }
 
-    public double getLeftAngle() {
-        return leftClaw.getPosition();
+    public double getAngle() {
+        return claw.getPosition();
     }
 
-    public double getRightAngle() {
-        return rightClaw.getPosition();
-    }
 }

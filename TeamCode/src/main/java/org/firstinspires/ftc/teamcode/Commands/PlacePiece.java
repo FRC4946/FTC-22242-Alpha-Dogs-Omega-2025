@@ -88,17 +88,22 @@ public class PlacePiece extends CommandBase {
                         break;
                     case 1:
                         s_Elevator.setPosition(Constants.ElevatorConstants.exchange);
-                        state = elevatorStates.IDLE;
+                        if (timer.seconds() > 2) {
+                            state = elevatorStates.IDLE;
+                        }
                 }
                 break;
             case IDLE:
                 s_Claw.setClaw(Constants.ClawConstants.open);
         }
 
-        if(gamepad.wasJustPressed(GamepadKeys.Button.A)) {
-            s_Claw.setClaw(Constants.ClawConstants.open);
+        if (gamepad.wasJustPressed(GamepadKeys.Button.A)) {
+            if (s_Claw.getAngle() == Constants.ClawConstants.open) {
+                s_Claw.setClaw(Constants.ClawConstants.closed);
+            } else {
+                s_Claw.setClaw(Constants.ClawConstants.open);
+            }
         }
-
     }
 
     private enum elevatorStates {

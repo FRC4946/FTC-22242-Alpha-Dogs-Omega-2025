@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -9,9 +10,9 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.teamcode.Constants;
 
-public class ColorSensor {
+public class ColourSensor {
 
-    private final com.qualcomm.robotcore.hardware.ColorSensor colourSensor;
+    private final ColorSensor colourSensor;
 
     private int gain;
 
@@ -22,8 +23,8 @@ public class ColorSensor {
     float saturation;
     float value;
 
-    public ColorSensor(HardwareMap hardwareMap) {
-        colourSensor = hardwareMap.get(com.qualcomm.robotcore.hardware.ColorSensor.class, "colourSensor1");
+    public ColourSensor(HardwareMap hardwareMap) {
+        colourSensor = hardwareMap.get(ColorSensor.class, "colourSensor1");
 
         gain = Constants.VisionConstants.gain;
         ((NormalizedColorSensor) colourSensor).setGain(gain);
@@ -46,6 +47,10 @@ public class ColorSensor {
         myColor = myNormalizedColors.toColor();
         value = JavaUtil.rgbToValue(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
         return value;
+    }
+
+    public boolean isColor(Color color) {
+        return
     }
 
 }
