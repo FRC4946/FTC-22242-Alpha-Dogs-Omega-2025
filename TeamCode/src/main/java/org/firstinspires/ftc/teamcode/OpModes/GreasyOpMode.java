@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 
 @TeleOp(name = "Greasy Teleop")
-public class CommandTeleop extends CommandOpMode {
+public class GreasyOpMode extends CommandOpMode {
 
     private GamepadEx m_DriverOp;
     private GamepadEx m_OperatorOp;
