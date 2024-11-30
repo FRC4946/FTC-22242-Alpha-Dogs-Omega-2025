@@ -45,4 +45,8 @@ public class Elevator extends SubsystemBase {
         elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void dropElevator() {
+        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        elevator.setPower(-0.5);
+    }
 }

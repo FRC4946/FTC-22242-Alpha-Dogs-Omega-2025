@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
@@ -15,7 +16,10 @@ public class SmartElevator extends CommandBase {
     private Arm s_Arm;
     private Claw s_Claw;
 
-    private GamepadEx gamepad;
+    private GamepadEx driver;
+    private GamepadEx operator;
+
+    private final Telemetry telemetry;
 
     private ElapsedTime timer = new ElapsedTime();
 
@@ -25,12 +29,15 @@ public class SmartElevator extends CommandBase {
 
     private int setpoint;
 
-    public SmartElevator(Elevator s_Elevator, Arm s_Arm, Claw s_Claw, GamepadEx gamepad) {
+    public SmartElevator(Elevator s_Elevator, Arm s_Arm, Claw s_Claw, GamepadEx driver, GamepadEx operator, Telemetry telemetry) {
         this.s_Elevator = s_Elevator;
         this.s_Arm = s_Arm;
         this.s_Claw = s_Claw;
 
-        this.gamepad = gamepad;
+        this.driver = driver;
+        this.operator = operator;
+
+        this.telemetry = telemetry;
 
         addRequirements(s_Elevator, s_Arm, s_Claw);
     }
@@ -49,11 +56,24 @@ public class SmartElevator extends CommandBase {
     @Override
     public void execute() {
 
-        s_Elevator.setPosition(setpoint);
-
         //gamepad.readButtons();
 
-        if (gamepad.wasJustPressed(GamepadKeys.Button.Y)) {
+        if (operator.wasJustPressed(GamepadKeys.Button.START)) {
+            s_Elevator.resetEncoder();
+        }
+
+        if (operator.isDown(GamepadKeys.Button.DPAD_DOWN)) {
+            s_Elevator.dropElevator();
+        }
+        if (operator.wasJustReleased(GamepadKeys.Button.DPAD_DOWN)) {
+            s_Elevator.resetEncoder();
+        }
+
+        if(!(operator.isDown(GamepadKeys.Button.DPAD_DOWN))) {
+            s_Elevator.setPosition(setpoint);
+        }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.Y)) {
             if (state == elevatorStates.PLACE_HIGH) {
                 state = elevatorStates.RETRACTING;
                 timer.reset();
@@ -65,7 +85,7 @@ public class SmartElevator extends CommandBase {
             }
         }
 
-        if (gamepad.wasJustPressed(GamepadKeys.Button.X)) {
+        if (driver.wasJustPressed(GamepadKeys.Button.X)) {
             if (state == elevatorStates.PLACE_LOW) {
                 state = elevatorStates.RETRACTING;
                 timer.reset();
@@ -77,7 +97,15 @@ public class SmartElevator extends CommandBase {
             }
         }
 
-        if (gamepad.wasJustPressed(GamepadKeys.Button.B)) {
+        if (driver.wasJustPressed(GamepadKeys.Button.A)) {
+            if (s_Claw.getAngle() == Constants.ClawConstants.open) {
+                s_Claw.setClaw(Constants.ClawConstants.closed);
+            } else {
+                s_Claw.setClaw(Constants.ClawConstants.open);
+            }
+        }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.B)) {
             if (state == elevatorStates.GRAB_SPECIMEN) {
                 state = elevatorStates.RETRACTING;
                 timer.reset();
@@ -89,7 +117,7 @@ public class SmartElevator extends CommandBase {
             }
         }
 
-        if (gamepad.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
+        if (driver.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
             if (state == elevatorStates.RAISE_SPECIMEN) {
                 state = elevatorStates.RETRACTING;
                 timer.reset();
@@ -101,7 +129,7 @@ public class SmartElevator extends CommandBase {
             }
         }
 
-        if (gamepad.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
+        if (driver.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
             if (state == elevatorStates.PLACE_SPECIMEN) {
                 state = elevatorStates.RETRACTING;
                 timer.reset();
@@ -113,15 +141,6 @@ public class SmartElevator extends CommandBase {
             }
         }
 
-        if (gamepad.wasJustPressed(GamepadKeys.Button.A)) {
-            if (s_Claw.getAngle() == Constants.ClawConstants.open) {
-                s_Claw.setClaw(Constants.ClawConstants.closed);
-            } else {
-                s_Claw.setClaw(Constants.ClawConstants.open);
-            }
-        }
-
-
         switch (state) {
             case PLACE_HIGH:
                 switch (phase) {
@@ -130,7 +149,7 @@ public class SmartElevator extends CommandBase {
                             phase++;
                         }
                         s_Claw.setClaw(Constants.ClawConstants.closed);
-                        phase += timer.seconds() > 0.3 ? 1 : 0;
+                        phase += timer.seconds() > 0.7 ? 1 : 0;
                         break;
                     case 1:
                         if (setpoint == Constants.ElevatorConstants.highBasket) {
@@ -222,6 +241,13 @@ public class SmartElevator extends CommandBase {
                 s_Claw.setClaw(s_Claw.getAngle());
                 s_Arm.setAngle(s_Arm.getAngle());
         }
+
+        telemetry.addLine("Elevator");
+        telemetry.addData("Setpoint", setpoint);
+        telemetry.addData("Height", s_Elevator.getPosition());
+        telemetry.addData("State", state);
+        telemetry.addLine();
+        //telemetry.update();
     }
 
     private enum elevatorStates {

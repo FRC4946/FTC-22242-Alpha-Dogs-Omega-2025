@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
@@ -19,10 +20,13 @@ public class TeleopDrive extends CommandBase {
 
     private double driveX, driveY, rotation;
 
-    public TeleopDrive(DriveTrain m_DriveTrain, GamepadEx gamepad) {
+    private final Telemetry telemetry;
+
+    public TeleopDrive(DriveTrain m_DriveTrain, GamepadEx gamepad, Telemetry telemetry) {
         this.m_DriveTrain = m_DriveTrain;
 
         this.gamepad = gamepad;
+        this.telemetry = telemetry;
 
         addRequirements(m_DriveTrain);
     }
@@ -65,5 +69,10 @@ public class TeleopDrive extends CommandBase {
         if (gamepad.wasJustPressed(GamepadKeys.Button.START)) {
             m_DriveTrain.resetYaw();
         }
+
+        telemetry.addLine("Drivetrain");
+        telemetry.addData("Heading", m_DriveTrain.getHeading());
+        telemetry.addLine();
+        //telemetry.update();
     }
 }

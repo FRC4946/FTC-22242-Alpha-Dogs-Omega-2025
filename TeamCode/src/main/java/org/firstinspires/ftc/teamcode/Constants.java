@@ -4,6 +4,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Constants {
 
+    public static final String blueAlliance = "Blue";
+    public static final String redAlliance = "Red";
+
     public static final class DriveTrainConstants {
 
         public static final String frontLeftMotor = "frontLeft0";
@@ -20,7 +23,7 @@ public class Constants {
         public static final String leftWrist2 = "leftWrist2";
         public static final String rightWrist3 = "rightWrist3";
         public static final double intakeAngle = 0.05;
-        public static final double transferAngle = 0;
+        public static final double transferAngle = 0.03;
         public static final double barAngle = 0.25;
         public static final Servo.Direction wristInvertL = Servo.Direction.FORWARD;
         public static final Servo.Direction wristInvertR = Servo.Direction.REVERSE;
@@ -31,6 +34,7 @@ public class Constants {
         public static final String leftIntake0 = "leftIntake0";
         public static final String rightIntake1 = "rightIntake1";
         public static final String colourSensor = "colourSensor";
+        public static final double intakeReduction = 0.3;
     }
 
     public static final class ExtensionConstants {
@@ -65,7 +69,7 @@ public class Constants {
 
     public static final class VisionConstants {
         public static final int gain = 100;
-        public static final int neutralHue = 162;
+        public static final int neutralHue = 167;
         public static final int redHue = 24;
         public static final int yellowHue = 82;
         public static final int blueHue = 223;

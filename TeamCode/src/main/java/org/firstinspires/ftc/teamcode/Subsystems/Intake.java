@@ -20,7 +20,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void setIntakePower(double power) {
-        leftIntake0.setPower(power);
-        rightIntake1.setPower(power);
+        leftIntake0.setPower(power * Constants.IntakeConstants.intakeReduction);
+        rightIntake1.setPower(power * Constants.IntakeConstants.intakeReduction);
     }
 }

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Commands.SmartElevator;
 import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleopDrive;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.ColourSensor;
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 @TeleOp(name = "Greasy Teleop")
 public class CommandTeleop extends CommandOpMode {
 
-    private GamepadEx m_driverOp;
+    private GamepadEx m_DriverOp;
     private GamepadEx m_OperatorOp;
 
     private DriveTrain s_Drivetrain;
@@ -41,9 +42,9 @@ public class CommandTeleop extends CommandOpMode {
     @Override
     public void initialize() {
 
-        allianceColour = "Blue";
+        allianceColour = Constants.blueAlliance;
 
-        m_driverOp = new GamepadEx(gamepad1);
+        m_DriverOp = new GamepadEx(gamepad1);
         m_OperatorOp = new GamepadEx(gamepad2);
 
         s_Drivetrain = new DriveTrain(hardwareMap);
@@ -54,18 +55,21 @@ public class CommandTeleop extends CommandOpMode {
         s_Claw = new Claw(hardwareMap);
         s_Arm = new Arm(hardwareMap);
 
-        s_ColourSensor = new ColourSensor(hardwareMap);
+        s_ColourSensor = new ColourSensor(hardwareMap, allianceColour);
 
         c_TeleopDrive = new TeleopDrive(
                 s_Drivetrain,
-                m_driverOp
+                m_DriverOp,
+                telemetry
         );
 
         c_SmartElevator = new SmartElevator(
                 s_Elevator,
                 s_Arm,
                 s_Claw,
-                m_driverOp
+                m_DriverOp,
+                m_OperatorOp,
+                telemetry
         );
 
         c_SmartIntake = new SmartIntake(
@@ -73,21 +77,16 @@ public class CommandTeleop extends CommandOpMode {
                 s_Wrist,
                 s_Extension,
                 s_ColourSensor,
-                m_driverOp,
+                m_DriverOp,
                 m_OperatorOp,
                 allianceColour,
                 telemetry
         );
 
-        register(s_Drivetrain, s_Elevator, s_Intake, s_Wrist, s_Extension);
+        register(s_Drivetrain, s_Elevator, s_Intake, s_Wrist, s_Extension, s_Arm, s_Claw, s_ColourSensor);
 
         s_Drivetrain.setDefaultCommand(c_TeleopDrive);
-        s_Elevator.setDefaultCommand(c_SmartElevator);
         s_Intake.setDefaultCommand(c_SmartIntake);
-
-//        schedule(c_TeleopDrive);
-        schedule(c_SmartIntake);
-//        schedule(c_PlacePiece);
-
+        s_Elevator.setDefaultCommand(c_SmartElevator);
     }
 }
