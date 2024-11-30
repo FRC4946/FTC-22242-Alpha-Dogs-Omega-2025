@@ -66,11 +66,20 @@ public class SmartIntake extends CommandBase {
 
         //gamepad.readButtons();
 
-        if (operator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - operator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) != 0) {
-            s_Intake.setIntakePower(operator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - operator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
-        } else {
-            s_Intake.setIntakePower(driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
+        if (!state.equals(intakeStates.PLACING)) {
+            if (operator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - operator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) != 0) {
+                s_Intake.setIntakePower(operator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - operator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
+            } else {
+                s_Intake.setIntakePower(driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
+            }
         }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.X) || driver.wasJustPressed(GamepadKeys.Button.Y)) {
+            state = intakeStates.PLACING;
+            timer.reset();
+            phase = 0;
+        }
+
 
         if (s_ColourSensor.checkPiece().equals("Nothing")) {
 
@@ -181,6 +190,19 @@ public class SmartIntake extends CommandBase {
                 s_Wrist.setAngle(Constants.WristConstants.transferAngle);
                 s_Extension.setAngle(Constants.ExtensionConstants.retracted);
                 break;
+            case PLACING:
+                switch (phase) {
+                    case 0:
+                        s_Intake.setIntakePower(1);
+                        phase += timer.seconds() > 0.5 ? 1 : 0;
+                        break;
+                    case 1:
+                        state = intakeStates.IDLING;
+                        timer.reset();
+                        phase = 0;
+                        break;
+                }
+
         }
 
         telemetry.addData("Alliance", alliance);
@@ -200,6 +222,13 @@ public class SmartIntake extends CommandBase {
         EXTENDING,
         RETURNING,
         IDLING,
-        TRANSFERRING
+        TRANSFERRING,
+        PLACING
+    }
+
+    public void setState (intakeStates stateToBe) {
+        state = stateToBe;
+        timer.reset();
+        phase = 0;
     }
 }
