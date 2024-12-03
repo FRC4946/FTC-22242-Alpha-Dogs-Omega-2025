@@ -56,8 +56,6 @@ public class SmartElevator extends CommandBase {
     @Override
     public void execute() {
 
-        //gamepad.readButtons();
-
         if (operator.wasJustPressed(GamepadKeys.Button.START)) {
             s_Elevator.resetEncoder();
         }

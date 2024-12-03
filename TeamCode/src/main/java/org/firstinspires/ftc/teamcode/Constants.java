@@ -33,6 +33,7 @@ public class Constants {
 
         public static final String leftIntake0 = "leftIntake0";
         public static final String rightIntake1 = "rightIntake1";
+        public static final String topRoller0 = "topRoller0";
         public static final String colourSensor = "colourSensor";
         public static final double intakeReduction = 0.3;
     }

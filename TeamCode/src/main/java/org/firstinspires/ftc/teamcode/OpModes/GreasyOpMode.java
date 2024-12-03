@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
-import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Commands.SmartElevator;
 import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
@@ -18,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 
 @TeleOp(name = "Greasy Teleop")
-public class GreasyOpMode extends CommandOpMode {
+public class GreasyOpMode extends LinearOpMode {
 
     private GamepadEx m_DriverOp;
     private GamepadEx m_OperatorOp;
@@ -38,9 +40,12 @@ public class GreasyOpMode extends CommandOpMode {
     private SmartIntake c_SmartIntake;
 
     private String allianceColour;
+    private ElapsedTime runtime;
+
+    private boolean slowMode;
 
     @Override
-    public void initialize() {
+    public void runOpMode() {
 
         allianceColour = Constants.redAlliance;
 
@@ -57,10 +62,15 @@ public class GreasyOpMode extends CommandOpMode {
 
         s_ColourSensor = new ColourSensor(hardwareMap, allianceColour);
 
+        runtime = new ElapsedTime();
+
+        slowMode = false;
+
         c_TeleopDrive = new TeleopDrive(
                 s_Drivetrain,
                 m_DriverOp,
-                telemetry
+                telemetry,
+                slowMode
         );
 
         c_SmartElevator = new SmartElevator(
@@ -83,10 +93,26 @@ public class GreasyOpMode extends CommandOpMode {
                 telemetry
         );
 
-        register(s_Drivetrain, s_Elevator, s_Intake, s_Wrist, s_Extension, s_Arm, s_Claw, s_ColourSensor);
+        waitForStart();
+        runtime.reset();
 
-        s_Drivetrain.setDefaultCommand(c_TeleopDrive);
-        s_Intake.setDefaultCommand(c_SmartIntake);
-        s_Elevator.setDefaultCommand(c_SmartElevator);
+        c_TeleopDrive.initialize();
+        c_SmartIntake.initialize();
+        c_SmartElevator.initialize();
+
+        while (opModeIsActive()) {
+            telemetry.update();
+            m_DriverOp.readButtons();
+            m_OperatorOp.readButtons();
+
+            c_TeleopDrive.execute();
+            c_SmartIntake.execute();
+            c_SmartElevator.execute();
+
+            if(m_DriverOp.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
+                slowMode = !slowMode;
+            }
+
+        }
     }
 }

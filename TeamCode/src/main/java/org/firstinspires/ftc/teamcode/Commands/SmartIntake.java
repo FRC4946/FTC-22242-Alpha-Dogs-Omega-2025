@@ -56,15 +56,12 @@ public class SmartIntake extends CommandBase {
     public void initialize() {
         s_Wrist.setAngle(Constants.WristConstants.transferAngle);
         s_Extension.setAngle(Constants.ExtensionConstants.retracted);
-        state = intakeStates.IDLING;
-        phase = 0;
+        setState(intakeStates.IDLING);
         hasPieceLogic = false;
     }
 
     @Override
     public void execute() {
-
-        //gamepad.readButtons();
 
         if (!state.equals(intakeStates.PLACING)) {
             if (operator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - operator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) != 0) {
@@ -74,10 +71,14 @@ public class SmartIntake extends CommandBase {
             }
         }
 
+        if (operator.isDown(GamepadKeys.Button.RIGHT_BUMPER)) {
+            s_Intake.setTopPoewr(1);
+        } else if (operator.isDown(GamepadKeys.Button.LEFT_BUMPER)) {
+            s_Intake.setTopPoewr(-1);
+        }
+
         if (driver.wasJustPressed(GamepadKeys.Button.X) || driver.wasJustPressed(GamepadKeys.Button.Y)) {
-            state = intakeStates.PLACING;
-            timer.reset();
-            phase = 0;
+            setState(intakeStates.PLACING);
         }
 
 
@@ -85,39 +86,29 @@ public class SmartIntake extends CommandBase {
 
             if (hasPieceLogic && !s_ColourSensor.hasPiece()) {
                 hasPieceLogic = false;
-                state = intakeStates.IDLING;
+                setState(intakeStates.IDLING);
             }
 
             if (driver.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
-                if (state == intakeStates.IDLING || state == intakeStates.RETURNING) {
-                    state = intakeStates.EXTENDING;
-                    timer.reset();
-                    phase = 0;
-                } else {
-                    state = intakeStates.RETURNING;
-                    timer.reset();
-                    phase = 0;
-                }
+                setState(intakeStates.EXTENDING);
+            }
+
+            if (driver.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
+                setState(intakeStates.RETURNING);
             }
         } else {
 
             if (s_ColourSensor.hasAlliancePiece()) {
                 if (s_Extension.getAngle() == Constants.ExtensionConstants.retracted) {
-                    state = intakeStates.TRANSFERRING;
-                    timer.reset();
-                    phase = 0;
+                    setState(intakeStates.TRANSFERRING);
                 } else {
                     if (!hasPieceLogic) {
                         hasPieceLogic = true;
-                        state = intakeStates.RETURNING;
-                        timer.reset();
-                        phase = 0;
+                        setState(intakeStates.RETURNING);
                     }
                 }
             } else {
-                state = intakeStates.OUTTAKING;
-                timer.reset();
-                phase = 0;
+                setState(intakeStates.OUTTAKING);
             }
         }
 
@@ -144,7 +135,7 @@ public class SmartIntake extends CommandBase {
                     case 3:
                         s_Wrist.setAngle(Constants.WristConstants.intakeAngle);
                         s_Extension.setAngle(Constants.ExtensionConstants.extended);
-                        state = intakeStates.INTAKING;
+                        setState(intakeStates.INTAKING);
                         break;
                 }
                 break;
@@ -164,9 +155,9 @@ public class SmartIntake extends CommandBase {
                     case 2:
                         s_Wrist.setAngle(Constants.WristConstants.transferAngle);
                         if (s_ColourSensor.hasAlliancePiece()) {
-                            state = intakeStates.TRANSFERRING;
+                            setState(intakeStates.TRANSFERRING);
                         } else {
-                            state = intakeStates.IDLING;
+                            setState(intakeStates.IDLING);
                         }
                         break;
                 }
@@ -181,9 +172,7 @@ public class SmartIntake extends CommandBase {
                         phase += timer.seconds() > 1 ? 1 : 0;
                         break;
                     case 1:
-                        state = intakeStates.INTAKING;
-                        timer.reset();
-                        phase = 0;
+                        setState(intakeStates.INTAKING);
                         break;
                 }
                 break;
@@ -202,9 +191,7 @@ public class SmartIntake extends CommandBase {
                         phase += timer.seconds() > 0.5 ? 1 : 0;
                         break;
                     case 1:
-                        state = intakeStates.IDLING;
-                        timer.reset();
-                        phase = 0;
+                        setState(intakeStates.IDLING);
                         break;
                 }
 
@@ -218,7 +205,7 @@ public class SmartIntake extends CommandBase {
         telemetry.addData("Alliance Piece", s_ColourSensor.hasAlliancePiece());
         telemetry.addData("Hue", s_ColourSensor.getHue());
         telemetry.addLine();
-        telemetry.update();
+        //telemetry.update();
     }
 
     private enum intakeStates {
@@ -231,7 +218,7 @@ public class SmartIntake extends CommandBase {
         PLACING
     }
 
-    public void setState (intakeStates stateToBe) {
+    public void setState(intakeStates stateToBe) {
         state = stateToBe;
         timer.reset();
         phase = 0;

@@ -22,24 +22,25 @@ public class TeleopDrive extends CommandBase {
 
     private final Telemetry telemetry;
 
-    public TeleopDrive(DriveTrain m_DriveTrain, GamepadEx gamepad, Telemetry telemetry) {
+    private final boolean slow;
+
+    public TeleopDrive(DriveTrain m_DriveTrain, GamepadEx gamepad, Telemetry telemetry, boolean slow) {
         this.m_DriveTrain = m_DriveTrain;
 
         this.gamepad = gamepad;
         this.telemetry = telemetry;
+
+        this.slow = slow;
 
         addRequirements(m_DriveTrain);
     }
 
     @Override
     public void initialize() {
-
     }
 
     @Override
     public void execute() {
-
-        gamepad.readButtons();
 
         driveY = gamepad.getLeftY();
         driveX = gamepad.getLeftX();
@@ -63,6 +64,13 @@ public class TeleopDrive extends CommandBase {
         double backLeftPower = (fieldOrientedY - fieldOrientedX + rotation) / denominator;
         double frontRightPower = (fieldOrientedY - fieldOrientedX - rotation) / denominator;
         double backRightPower = (fieldOrientedY + fieldOrientedX - rotation) / denominator;
+
+        if(slow) {
+            frontLeftPower *= 0.2;
+            backLeftPower *= 0.2;
+            frontRightPower *= 0.2;
+            backRightPower *= 0.2;
+        }
 
         m_DriveTrain.setPower(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 
