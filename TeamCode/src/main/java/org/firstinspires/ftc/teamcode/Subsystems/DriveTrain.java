@@ -57,6 +57,13 @@ public class DriveTrain extends SubsystemBase {
         backRight3.setPower(backRightPower);
     }
 
+    public void stop() {
+        frontLeft0.setPower(0);
+        frontRight1.setPower(0);
+        backLeft2.setPower(0);
+        backRight3.setPower(0);
+    }
+
     /**
      * Updates the yaw offset to the current heading
      */
@@ -72,5 +79,4 @@ public class DriveTrain extends SubsystemBase {
     public double getHeading() {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
     }
-
 }

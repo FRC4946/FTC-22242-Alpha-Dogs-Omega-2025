@@ -42,7 +42,7 @@ public class GreasyOpMode extends CommandOpMode {
     @Override
     public void initialize() {
 
-        allianceColour = Constants.blueAlliance;
+        allianceColour = Constants.redAlliance;
 
         m_DriverOp = new GamepadEx(gamepad1);
         m_OperatorOp = new GamepadEx(gamepad2);

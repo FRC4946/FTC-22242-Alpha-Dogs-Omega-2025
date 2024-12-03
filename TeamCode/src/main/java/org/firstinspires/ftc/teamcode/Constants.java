@@ -22,7 +22,7 @@ public class Constants {
     public static final class WristConstants {
         public static final String leftWrist2 = "leftWrist2";
         public static final String rightWrist3 = "rightWrist3";
-        public static final double intakeAngle = 0.05;
+        public static final double intakeAngle = 0.1;
         public static final double transferAngle = 0.03;
         public static final double barAngle = 0.25;
         public static final Servo.Direction wristInvertL = Servo.Direction.FORWARD;
@@ -39,18 +39,18 @@ public class Constants {
 
     public static final class ExtensionConstants {
         public static final String extension = "extension3";
-        public static final double retracted = 0.21;
-        public static final double clearBar = 0.11;
+        public static final double retracted = 0.24;
+        public static final double clearBar = 0.05;
         public static final double extended = 0;
     }
 
     public static final class ArmConstants {
         public static final String arm = "arm4";
         public static final double exchangeAngle = 0.98;
-        public static final double dropAngle = 0.35;
-        public static final double grabSpecimenAngle = 0.7; //TODO FIND THESE VALUE
-        public static final double raiseSpecimenAngle = 0.5;
-        public static final double placeSpecimenAngle = 0.6;
+        public static final double dropAngle = 0.32;
+        public static final double grabSpecimenAngle = 0.8; //TODO FIND THESE VALUE
+        public static final double raiseSpecimenAngle = 0.2;
+        public static final double placeSpecimenAngle = 0.1;
 
     }
 
@@ -63,8 +63,8 @@ public class Constants {
     public static final class ElevatorConstants {
         public static final String elevator = "elevator0";
         public static final int highBasket = 1450;
-        public static final int lowBasket = 60;
-        public static final int exchange = 60;
+        public static final int lowBasket = 80;
+        public static final int exchange = 80;
     }
 
     public static final class VisionConstants {

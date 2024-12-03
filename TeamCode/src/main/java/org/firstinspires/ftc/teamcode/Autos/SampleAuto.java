@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Commands.PlaceBucket;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
@@ -33,18 +34,32 @@ public class SampleAuto extends LinearOpMode {
         phase = 0;
         timer = new ElapsedTime();
 
-        PlaceBucket place = new PlaceBucket(s_Elevator, s_Arm, s_Claw);
+        PlaceBucket place = new PlaceBucket(s_Elevator, s_Arm, s_Claw, telemetry);
 
         waitForStart();
+        place.initialize();
         while (opModeIsActive()) {
             switch (phase) {
                 case 0:
-                    place.initialize();
-                    place.execute();
-                    phase += place.isFinished() ? 1 : 0;
+                    s_Drivetrain.setPower(-0.2, -0.2, -0.2, -0.2);
+                    phase += timer.seconds() > 1.2 ? 1 : 0;
                     break;
+                case 1:
+                    s_Drivetrain.stop();
+                   // place.execute();
+                    //timer.reset();
+                   // phase += place.isFinished() ? 1 : 0;
+                    break;
+//                case 2:
+//                    s_Drivetrain.setPower(-0.1, 0.1, -0.1, 0.1);
+//                    phase += timer.seconds() >  0.8 ? 1 : 0;
+//                    break;
+//                case 3:
+//                    s_Drivetrain.stop();
+////                    s_Drivetrain.setPower(0.1, 0.1, 0.1, 0.1);
+////                    phase += timer.seconds() > 2 ? 1 : 0;
+//                    break;
             }
-
         }
     }
 }

@@ -134,9 +134,14 @@ public class SmartIntake extends CommandBase {
                     case 1:
                         s_Wrist.setAngle(Constants.WristConstants.barAngle);
                         s_Extension.setAngle(Constants.ExtensionConstants.clearBar);
-                        phase += timer.seconds() > 1 ? 1 : 0;
+                        phase += timer.seconds() > 0.8 ? 1 : 0;
                         break;
                     case 2:
+                        s_Wrist.setAngle(Constants.WristConstants.intakeAngle);
+                        s_Extension.setAngle(Constants.ExtensionConstants.clearBar);
+                        phase += timer.seconds() > 1.6 ? 1 : 0;
+                        break;
+                    case 3:
                         s_Wrist.setAngle(Constants.WristConstants.intakeAngle);
                         s_Extension.setAngle(Constants.ExtensionConstants.extended);
                         state = intakeStates.INTAKING;
@@ -172,8 +177,8 @@ public class SmartIntake extends CommandBase {
             case OUTTAKING:
                 switch (phase) {
                     case 0:
-                        s_Intake.setIntakePower(-1);
-                        phase += timer.seconds() > 0.2 ? 1 : 0;
+                        s_Intake.setIntakePower(-4);
+                        phase += timer.seconds() > 1 ? 1 : 0;
                         break;
                     case 1:
                         state = intakeStates.INTAKING;
