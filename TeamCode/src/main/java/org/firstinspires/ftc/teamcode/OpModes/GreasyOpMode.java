@@ -109,7 +109,7 @@ public class GreasyOpMode extends LinearOpMode {
             c_SmartIntake.execute();
             c_SmartElevator.execute();
 
-            if(m_DriverOp.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
+            if(m_DriverOp.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
                 slowMode = !slowMode;
             }
 
