@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Commands.SmartElevator;
 import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleopDrive;
+import org.firstinspires.ftc.teamcode.Commands.TurnToAngle;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
@@ -39,6 +40,8 @@ public class GreasyOpMode extends LinearOpMode {
     private SmartElevator c_SmartElevator;
     private SmartIntake c_SmartIntake;
 
+    private TurnToAngle c_TurnToAngle;
+
     private String allianceColour;
     private ElapsedTime runtime;
 
@@ -65,6 +68,8 @@ public class GreasyOpMode extends LinearOpMode {
         runtime = new ElapsedTime();
 
         slowMode = false;
+
+        c_TurnToAngle = new TurnToAngle(s_Drivetrain, 90, telemetry);
 
         c_TeleopDrive = new TeleopDrive(
                 s_Drivetrain,
@@ -93,14 +98,18 @@ public class GreasyOpMode extends LinearOpMode {
                 telemetry
         );
 
+
+
         waitForStart();
         runtime.reset();
 
         c_TeleopDrive.initialize();
         c_SmartIntake.initialize();
         c_SmartElevator.initialize();
+        //c_TurnToAngle.initialize();
 
         while (opModeIsActive()) {
+            telemetry.addData("Heading", Math.toDegrees(s_Drivetrain.getHeading()));
             telemetry.update();
             m_DriverOp.readButtons();
             m_OperatorOp.readButtons();
@@ -109,9 +118,14 @@ public class GreasyOpMode extends LinearOpMode {
             c_SmartIntake.execute();
             c_SmartElevator.execute();
 
+
             if(m_DriverOp.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
                 slowMode = !slowMode;
             }
+
+//            if(m_DriverOp.isDown(GamepadKeys.Button.A)) {
+//                c_TurnToAngle.execute();
+//            }
 
         }
     }

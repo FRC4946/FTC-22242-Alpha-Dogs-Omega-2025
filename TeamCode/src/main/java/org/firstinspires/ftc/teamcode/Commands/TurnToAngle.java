@@ -15,6 +15,8 @@ public class TurnToAngle extends CommandBase {
 
     private final Telemetry telemetry;
 
+    private double currentAngle, correction;
+
     public TurnToAngle(DriveTrain s_DriveTrain, double heading, Telemetry telemetry) {
         this.s_DriveTrain = s_DriveTrain;
 
@@ -29,8 +31,11 @@ public class TurnToAngle extends CommandBase {
                 Constants.DriveTrainConstants.kF
         );
 
+        pid.setIntegrationBounds(-180, 180);
+
         pid.setTolerance(Constants.DriveTrainConstants.PIDTolerance);
 
+        pid.setSetPoint(heading);
         addRequirements(s_DriveTrain);
     }
 
@@ -41,14 +46,14 @@ public class TurnToAngle extends CommandBase {
 
     @Override
     public void execute() {
-        double currentAngle = s_DriveTrain.getHeadingDegrees();
-        double correction = pid.calculate(currentAngle);
+        currentAngle = Math.toDegrees(s_DriveTrain.getHeading());
+        correction = pid.calculate(currentAngle, heading);
 
         s_DriveTrain.setPower(
-                correction,
+                -correction,
                 correction,
                 -correction,
-                -correction
+                correction
         );
 
         telemetry.addData("At Sepoint", atSetpoint());
