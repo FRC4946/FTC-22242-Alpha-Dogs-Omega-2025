@@ -60,13 +60,6 @@ public class SmartElevator extends CommandBase {
             s_Elevator.resetEncoder();
         }
 
-        if (operator.isDown(GamepadKeys.Button.DPAD_DOWN)) {
-            s_Elevator.dropElevator();
-        }
-        if (operator.wasJustReleased(GamepadKeys.Button.DPAD_DOWN)) {
-            s_Elevator.resetEncoder();
-        }
-
         if(!(operator.isDown(GamepadKeys.Button.DPAD_DOWN))) {
             s_Elevator.setPosition(setpoint);
         }
@@ -242,10 +235,10 @@ public class SmartElevator extends CommandBase {
 
         telemetry.addLine("Elevator");
         telemetry.addData("Setpoint", setpoint);
-        telemetry.addData("Height", s_Elevator.getPosition());
+        telemetry.addData("Left Height", s_Elevator.getLeftPosition());
+        telemetry.addData("Right Height", s_Elevator.getRightPosition());
         telemetry.addData("State", state);
         telemetry.addLine();
-        //telemetry.update();
     }
 
     private enum elevatorStates {

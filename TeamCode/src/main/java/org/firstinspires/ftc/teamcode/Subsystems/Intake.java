@@ -1,33 +1,52 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class Intake extends SubsystemBase {
 
-    private final CRServo leftIntake0;
-    private final CRServo rightIntake1;
-    private final CRServo topRoller0;
+    private final Servo claw0;
+    private final Servo rotate1;
+    private final Servo wrist2;
 
     public Intake(HardwareMap hardwareMap) {
-        leftIntake0 = hardwareMap.get(CRServo.class, Constants.IntakeConstants.leftIntake0);
-        rightIntake1 = hardwareMap.get(CRServo.class, Constants.IntakeConstants.rightIntake1);
-        topRoller0 = hardwareMap.get(CRServo.class, Constants.IntakeConstants.topRoller0);
-        leftIntake0.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightIntake1.setDirection(DcMotorSimple.Direction.FORWARD);
-        topRoller0.setDirection(DcMotorSimple.Direction.FORWARD);
+        claw0 = hardwareMap.get(Servo.class, Constants.IntakeConstants.intakeClaw0);
+        rotate1 = hardwareMap.get(Servo.class, Constants.IntakeConstants.intakeRotate1);
+        wrist2 = hardwareMap.get(Servo.class, Constants.WristConstants.wrist2);
+        claw0.setDirection(Servo.Direction.FORWARD);
+        rotate1.setDirection(Servo.Direction.FORWARD);
+        wrist2.setDirection(Servo.Direction.FORWARD);
     }
 
-    public void setIntakePower(double power) {
-        leftIntake0.setPower(power * Constants.IntakeConstants.intakeReduction);
-        rightIntake1.setPower(power * Constants.IntakeConstants.intakeReduction);
+    public void openClaw() {
+        claw0.setPosition(Constants.IntakeConstants.open);
     }
 
-    public void setTopPoewr(double topPower) {
-        topRoller0.setPower(topPower);
+    public void closeClaw() {
+        claw0.setPosition(Constants.IntakeConstants.closed);
     }
+
+    public void setRotation(double angle) {
+        rotate1.setPosition(angle);
+    }
+
+    public void setWrist(double angle) {
+        wrist2.setPosition(angle);
+    }
+
+    public double getClaw() {
+        return claw0.getPosition();
+    }
+
+    public double getRotation() {
+        return rotate1.getPosition();
+    }
+
+    public double getWrist() {
+        return wrist2.getPosition();
+    }
+
 }

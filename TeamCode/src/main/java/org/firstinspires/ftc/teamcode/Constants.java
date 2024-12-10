@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.Servo;
-
 public class Constants {
 
     public static final String blueAlliance = "Blue";
@@ -26,33 +24,29 @@ public class Constants {
     }
 
     public static final class WristConstants {
-        public static final String leftWrist2 = "leftWrist2";
-        public static final String rightWrist3 = "rightWrist3";
-        public static final double intakeAngle = 0.1;
-        public static final double transferAngle = 0.03;
-        public static final double barAngle = 0.25;
-        public static final Servo.Direction wristInvertL = Servo.Direction.FORWARD;
-        public static final Servo.Direction wristInvertR = Servo.Direction.REVERSE;
+        public static final String wrist2 = "wrist1";
+        public static final double defaultAngle = 0;
+        public static final double transferAngle = 0.4;
     }
 
     public static final class IntakeConstants {
-
-        public static final String leftIntake0 = "leftIntake0";
-        public static final String rightIntake1 = "rightIntake1";
-        public static final String topRoller0 = "topRoller0";
-        public static final String colourSensor = "colourSensor";
-        public static final double intakeReduction = 0.3;
+        public static final String intakeClaw0 = "intakeClaw0";
+        public static final String intakeRotate1 = "intakeRotate2";
+        public static final double open = 0;
+        public static final double closed = 0.21;
+        public static final double defaultRotation = 0.6;
     }
 
     public static final class ExtensionConstants {
-        public static final String extension = "extension3";
+        public static final String leftExtension = "leftExtension3";
+        public static final String rightExtension = "rightExtension4";
         public static final double retracted = 0.24;
-        public static final double clearBar = 0.05;
         public static final double extended = 0;
     }
 
     public static final class ArmConstants {
-        public static final String arm = "arm4";
+        public static final String leftArm = "leftArm1";
+        public static final String rightArm = "rightArm2";
         public static final double exchangeAngle = 0.98;
         public static final double dropAngle = 0.32;
         public static final double grabSpecimenAngle = 0.8; //TODO FIND THESE VALUE
@@ -62,14 +56,15 @@ public class Constants {
     }
 
     public static final class ClawConstants {
-        public static final String leftClaw = "claw1";
+        public static final String claw0 = "claw0";
         public static final double open = 0.1;
         public static final double closed = 0;
     }
 
     public static final class ElevatorConstants {
-        public static final String elevator = "elevator0";
-        public static final int highBasket = 1450;
+        public static final String leftElevator = "leftElevator0";
+        public static final String rightElevator = "rightElevator1";
+        public static final int highBasket = 1300;
         public static final int lowBasket = 80;
         public static final int exchange = 80;
     }
