@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Commands.NewSmartIntake;
 import org.firstinspires.ftc.teamcode.Commands.SmartElevator;
 import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleopDrive;
@@ -26,16 +27,14 @@ public class GreasyOpMode extends LinearOpMode {
     private DriveTrain s_Drivetrain;
     private Elevator s_Elevator;
     private Intake s_Intake;
-    private Wrist s_Wrist;
     private Extension s_Extension;
     private Claw s_Claw;
     private Arm s_Arm;
 
-    private ColourSensor s_ColourSensor;
 
     private TeleopDrive c_TeleopDrive;
     private SmartElevator c_SmartElevator;
-    private SmartIntake c_SmartIntake;
+    private NewSmartIntake c_SmartIntake;
 
     private String allianceColour;
     private ElapsedTime runtime;
@@ -53,12 +52,10 @@ public class GreasyOpMode extends LinearOpMode {
         s_Drivetrain = new DriveTrain(hardwareMap);
         s_Elevator = new Elevator(hardwareMap);
         s_Intake = new Intake(hardwareMap);
-        s_Wrist = new Wrist(hardwareMap);
         s_Extension = new Extension(hardwareMap);
         s_Claw = new Claw(hardwareMap);
         s_Arm = new Arm(hardwareMap);
 
-        s_ColourSensor = new ColourSensor(hardwareMap, allianceColour);
 
         runtime = new ElapsedTime();
 
@@ -80,11 +77,9 @@ public class GreasyOpMode extends LinearOpMode {
                 telemetry
         );
 
-        c_SmartIntake = new SmartIntake(
+        c_SmartIntake = new NewSmartIntake(
                 s_Intake,
-                s_Wrist,
                 s_Extension,
-                s_ColourSensor,
                 m_DriverOp,
                 m_OperatorOp,
                 allianceColour,
