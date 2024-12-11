@@ -42,8 +42,6 @@ public class GreasyOpMode extends LinearOpMode {
     private String allianceColour;
     private ElapsedTime runtime;
 
-    private boolean slowMode;
-
     @Override
     public void runOpMode() {
 
@@ -62,15 +60,12 @@ public class GreasyOpMode extends LinearOpMode {
 
         runtime = new ElapsedTime();
 
-        slowMode = false;
-
         c_TurnToAngle = new TurnToAngle(s_Drivetrain, 90, telemetry);
 
         c_TeleopDrive = new TeleopDrive(
                 s_Drivetrain,
                 m_DriverOp,
-                telemetry,
-                slowMode
+                telemetry
         );
 
 //        c_SmartElevator = new SmartElevator(
@@ -110,11 +105,6 @@ public class GreasyOpMode extends LinearOpMode {
             c_TeleopDrive.execute();
             c_SmartIntake.execute();
             //c_SmartElevator.execute();
-
-
-            if(m_DriverOp.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
-                slowMode = !slowMode;
-            }
 
 //            if(m_DriverOp.isDown(GamepadKeys.Button.A)) {
 //                c_TurnToAngle.execute();

@@ -18,9 +18,7 @@ public class TeleopDrive extends CommandBase {
 
     private final Telemetry telemetry;
 
-    private boolean slow;
-
-    public TeleopDrive(DriveTrain m_DriveTrain, GamepadEx gamepad, Telemetry telemetry, boolean slow) {
+    public TeleopDrive(DriveTrain m_DriveTrain, GamepadEx gamepad, Telemetry telemetry) {
         this.m_DriveTrain = m_DriveTrain;
 
         this.gamepad = gamepad;
@@ -31,7 +29,6 @@ public class TeleopDrive extends CommandBase {
 
     @Override
     public void initialize() {
-        slow = false;
     }
 
     @Override
@@ -60,27 +57,25 @@ public class TeleopDrive extends CommandBase {
         double frontRightPower = (fieldOrientedY - fieldOrientedX - rotation) / denominator;
         double backRightPower = (fieldOrientedY + fieldOrientedX - rotation) / denominator;
 
-        if (slow) {
-            m_DriveTrain.setPower(
-                    frontLeftPower * 0.1,
-                    frontRightPower * 0.1,
-                    backLeftPower * 0.1,
-                    backRightPower * 0.1);
-        } else {
-            m_DriveTrain.setPower(
-                    frontLeftPower,
-                    frontRightPower,
-                    backLeftPower,
-                    backRightPower);
-        }
-
         if (gamepad.wasJustPressed(GamepadKeys.Button.START)) {
             m_DriveTrain.resetYaw();
         }
 
+        if(NewSmartIntake.isSearching() || gamepad.isDown(GamepadKeys.Button.RIGHT_STICK_BUTTON)) {
+            frontLeftPower *= 0.1;
+            frontRightPower *= 0.1;
+            backLeftPower *= 0.1;
+            backRightPower *= 0.1;
+        }
+
+        m_DriveTrain.setPower(
+                frontLeftPower,
+                frontRightPower,
+                backLeftPower,
+                backRightPower);
+
         telemetry.addLine("Drivetrain");
         telemetry.addData("Heading", m_DriveTrain.getHeading());
         telemetry.addLine();
-        //telemetry.update();
     }
 }

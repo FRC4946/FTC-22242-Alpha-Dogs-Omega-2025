@@ -19,7 +19,7 @@ public class NewSmartIntake extends CommandBase {
     private GamepadEx operator;
 
     private int phase;
-    private intakeStates state;
+    private static intakeStates state;
     private ElapsedTime timer = new ElapsedTime();
 
     private String alliance;
@@ -178,9 +178,13 @@ public class NewSmartIntake extends CommandBase {
         EXCHANGING
     }
 
-    public void setState(intakeStates stateToBe) {
+    private void setState(intakeStates stateToBe) {
         state = stateToBe;
         timer.reset();
         phase = 0;
+    }
+
+    public static boolean isSearching() {
+        return state == intakeStates.SEARCHING;
     }
 }
