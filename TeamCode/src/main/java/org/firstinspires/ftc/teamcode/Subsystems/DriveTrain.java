@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -13,18 +14,18 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
 public class DriveTrain extends SubsystemBase {
 
-    private final DcMotor frontLeft0;
-    private final DcMotor frontRight1;
-    private final DcMotor backLeft2;
-    private final DcMotor backRight3;
+    private final DcMotorEx frontLeft0;
+    private final DcMotorEx frontRight1;
+    private final DcMotorEx backLeft2;
+    private final DcMotorEx backRight3;
 
     private final IMU imu;
 
     public DriveTrain(HardwareMap hardwareMap) {
-        frontLeft0 = hardwareMap.get(DcMotor.class, DriveTrainConstants.frontLeftMotor);
-        frontRight1 = hardwareMap.get(DcMotor.class, DriveTrainConstants.frontRightMotor);
-        backLeft2 = hardwareMap.get(DcMotor.class, DriveTrainConstants.backLeftMotor);
-        backRight3 = hardwareMap.get(DcMotor.class, DriveTrainConstants.backRightMotor);
+        frontLeft0 = hardwareMap.get(DcMotorEx.class, DriveTrainConstants.frontLeftMotor);
+        frontRight1 = hardwareMap.get(DcMotorEx.class, DriveTrainConstants.frontRightMotor);
+        backLeft2 = hardwareMap.get(DcMotorEx.class, DriveTrainConstants.backLeftMotor);
+        backRight3 = hardwareMap.get(DcMotorEx.class, DriveTrainConstants.backRightMotor);
 
         frontLeft0.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRight1.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -55,6 +56,21 @@ public class DriveTrain extends SubsystemBase {
         frontRight1.setPower(frontRightPower);
         backLeft2.setPower(backLeftPower);
         backRight3.setPower(backRightPower);
+    }
+
+    public void setVelocity(int frontLeftPower, int frontRightPower, int backLeftPower, int backRightPower) {
+        frontLeft0.setVelocity(frontLeftPower);
+        frontRight1.setVelocity(frontRightPower);
+        backLeft2.setVelocity(backLeftPower);
+        backRight3.setVelocity(backRightPower);
+    }
+
+    public double getLeftVelocity() {
+        return (frontLeft0.getVelocity() + backLeft2.getVelocity()) / 2;
+    }
+
+    public double getRightVelocity() {
+        return (frontRight1.getVelocity() + backRight3.getVelocity()) / 2;
     }
 
     public void stop() {

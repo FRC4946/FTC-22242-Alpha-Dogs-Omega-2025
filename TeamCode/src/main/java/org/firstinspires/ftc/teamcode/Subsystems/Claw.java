@@ -19,6 +19,14 @@ public class Claw extends SubsystemBase {
         claw.setPosition(angle);
     }
 
+    public void openClaw() {
+        claw.setPosition(Constants.ClawConstants.open);
+    }
+
+    public void closeClaw() {
+        claw.setPosition(Constants.ClawConstants.closed);
+    }
+
     public double getAngle() {
         return claw.getPosition();
     }

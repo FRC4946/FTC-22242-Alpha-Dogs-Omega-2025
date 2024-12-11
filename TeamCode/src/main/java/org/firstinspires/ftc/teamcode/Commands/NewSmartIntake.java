@@ -66,6 +66,10 @@ public class NewSmartIntake extends CommandBase {
             }
         }
 
+        if(driver.wasJustPressed(GamepadKeys.Button.B)) {
+            setState(intakeStates.EXCHANGING);
+        }
+
         switch (state) {
             case IDLING:
                 if (s_Intake.getClaw() == Constants.IntakeConstants.closed) {

@@ -46,7 +46,7 @@ public class NewSmartElevator extends CommandBase {
     public void initialize() {
         setpoint = Constants.ElevatorConstants.exchange;
         s_Arm.setAngle(Constants.ArmConstants.exchangeAngle);
-        s_Claw.setClaw(Constants.ClawConstants.open);
+        s_Claw.setClaw(Constants.ClawConstants.closed);// TODO CHANGE
         s_Elevator.enable();
 
         state = elevatorStates.IDLE;
@@ -97,12 +97,12 @@ public class NewSmartElevator extends CommandBase {
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.B)) {
-            if (state == elevatorStates.GRAB_SPECIMEN) {
+            if (state == elevatorStates.EXCHANGING) {
                 state = elevatorStates.RETRACTING;
                 timer.reset();
                 phase = 0;
             } else {
-                state = elevatorStates.GRAB_SPECIMEN;
+                state = elevatorStates.EXCHANGING;
                 timer.reset();
                 phase = 0;
             }
@@ -115,18 +115,6 @@ public class NewSmartElevator extends CommandBase {
                 phase = 0;
             } else {
                 state = elevatorStates.RAISE_SPECIMEN;
-                timer.reset();
-                phase = 0;
-            }
-        }
-
-        if (driver.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
-            if (state == elevatorStates.PLACE_SPECIMEN) {
-                state = elevatorStates.RETRACTING;
-                timer.reset();
-                phase = 0;
-            } else {
-                state = elevatorStates.PLACE_SPECIMEN;
                 timer.reset();
                 phase = 0;
             }
@@ -173,7 +161,7 @@ public class NewSmartElevator extends CommandBase {
                         s_Arm.setAngle(Constants.ArmConstants.dropAngle);
                 }
                 break;
-            case GRAB_SPECIMEN:
+            case EXCHANGING:
                 switch (phase) {
                     case 0:
                         if (setpoint == Constants.ElevatorConstants.exchange) {
@@ -196,19 +184,6 @@ public class NewSmartElevator extends CommandBase {
                         phase += timer.seconds() > 0.2 ? 1 : 0;
                     case 1:
                         s_Arm.setAngle(Constants.ArmConstants.raiseSpecimenAngle);
-                        break;
-                }
-                break;
-            case PLACE_SPECIMEN:
-                switch (phase) {
-                    case 0:
-                        if (setpoint == Constants.ElevatorConstants.exchange) {
-                            phase++;
-                        }
-                        setpoint = Constants.ElevatorConstants.exchange;
-                        phase += timer.seconds() > 0.2 ? 1 : 0;
-                    case 1:
-                        s_Arm.setAngle(Constants.ArmConstants.placeSpecimenAngle);
                         break;
                 }
                 break;
@@ -245,9 +220,8 @@ public class NewSmartElevator extends CommandBase {
         IDLE,
         PLACE_HIGH,
         PLACE_LOW,
-        GRAB_SPECIMEN,
+        EXCHANGING,
         RAISE_SPECIMEN,
-        PLACE_SPECIMEN,
         RETRACTING
     }
 }

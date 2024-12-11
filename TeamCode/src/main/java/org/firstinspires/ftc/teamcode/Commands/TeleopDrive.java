@@ -61,11 +61,11 @@ public class TeleopDrive extends CommandBase {
             m_DriveTrain.resetYaw();
         }
 
-        if(NewSmartIntake.isSearching() || gamepad.isDown(GamepadKeys.Button.RIGHT_STICK_BUTTON)) {
-            frontLeftPower *= 0.1;
-            frontRightPower *= 0.1;
-            backLeftPower *= 0.1;
-            backRightPower *= 0.1;
+        if(NewSmartIntake.isSearching() || gamepad.isDown(GamepadKeys.Button.LEFT_STICK_BUTTON)) {
+            frontLeftPower *= 0.15;
+            frontRightPower *= 0.15;
+            backLeftPower *= 0.15;
+            backRightPower *= 0.15;
         }
 
         m_DriveTrain.setPower(

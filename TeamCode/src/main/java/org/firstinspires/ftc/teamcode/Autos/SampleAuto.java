@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 
-@Autonomous(name = "Greasy Auto")
+@Autonomous(name = "Greasy Sample Auto")
 public class SampleAuto extends LinearOpMode {
 
     private DriveTrain s_Drivetrain;
@@ -36,8 +36,8 @@ public class SampleAuto extends LinearOpMode {
 
         PlaceBucket place = new PlaceBucket(s_Elevator, s_Arm, s_Claw, telemetry);
 
-        waitForStart();
         place.initialize();
+        waitForStart();
         while (opModeIsActive()) {
             switch (phase) {
                 case 0:
@@ -46,9 +46,9 @@ public class SampleAuto extends LinearOpMode {
                     break;
                 case 1:
                     s_Drivetrain.stop();
-                   // place.execute();
+                    // place.execute();
                     //timer.reset();
-                   // phase += place.isFinished() ? 1 : 0;
+                    // phase += place.isFinished() ? 1 : 0;
                     break;
 //                case 2:
 //                    s_Drivetrain.setPower(-0.1, 0.1, -0.1, 0.1);

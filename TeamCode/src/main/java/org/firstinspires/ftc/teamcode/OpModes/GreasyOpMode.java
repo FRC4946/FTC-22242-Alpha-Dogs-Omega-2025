@@ -34,7 +34,7 @@ public class GreasyOpMode extends LinearOpMode {
 
 
     private TeleopDrive c_TeleopDrive;
-    //private SmartElevator c_SmartElevator;
+    private SmartElevator c_SmartElevator;
     private NewSmartIntake c_SmartIntake;
 
     private TurnToAngle c_TurnToAngle;
@@ -68,14 +68,14 @@ public class GreasyOpMode extends LinearOpMode {
                 telemetry
         );
 
-//        c_SmartElevator = new SmartElevator(
-//                s_Elevator,
-//                s_Arm,
-//                s_Claw,
-//                m_DriverOp,
-//                m_OperatorOp,
-//                telemetry
-//        );
+        c_SmartElevator = new SmartElevator(
+                s_Elevator,
+                s_Arm,
+                s_Claw,
+                m_DriverOp,
+                m_OperatorOp,
+                telemetry
+        );
 
         c_SmartIntake = new NewSmartIntake(
                 s_Intake,
@@ -93,7 +93,7 @@ public class GreasyOpMode extends LinearOpMode {
 
         c_TeleopDrive.initialize();
         c_SmartIntake.initialize();
-        //c_SmartElevator.initialize();
+        c_SmartElevator.initialize();
         //c_TurnToAngle.initialize();
 
         while (opModeIsActive()) {
@@ -104,7 +104,7 @@ public class GreasyOpMode extends LinearOpMode {
 
             c_TeleopDrive.execute();
             c_SmartIntake.execute();
-            //c_SmartElevator.execute();
+            c_SmartElevator.execute();
 
 //            if(m_DriverOp.isDown(GamepadKeys.Button.A)) {
 //                c_TurnToAngle.execute();
