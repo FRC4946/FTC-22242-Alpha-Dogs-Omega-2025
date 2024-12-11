@@ -10,42 +10,53 @@ import org.firstinspires.ftc.teamcode.Constants;
 
 public class Elevator extends SubsystemBase {
 
-    private final DcMotor elevator;
+    private final DcMotor leftElevator0;
+    private final DcMotor rightElevator1;
 
     private int power;
 
     public Elevator(HardwareMap hardwareMap) {
-        elevator = hardwareMap.get(DcMotor.class, Constants.ElevatorConstants.elevator);
 
-        elevator.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftElevator0 = hardwareMap.get(DcMotor.class, Constants.ElevatorConstants.leftElevator);
+        rightElevator1 = hardwareMap.get(DcMotor.class, Constants.ElevatorConstants.rightElevator);
 
-        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftElevator0.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightElevator1.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        leftElevator0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightElevator1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        leftElevator0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightElevator1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         power = 0;
     }
 
     public void setPosition(int position) {
-        elevator.setTargetPosition(position);
-        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftElevator0.setTargetPosition(position);
+        rightElevator1.setTargetPosition(position);
+
+        leftElevator0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightElevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public int getPosition() {
-        return elevator.getCurrentPosition();
+    public int getLeftPosition() {
+        return leftElevator0.getCurrentPosition();
+    }
+    public int getRightPosition() {
+        return rightElevator1.getCurrentPosition();
     }
 
     public void enable() {
         power = (power == 1) ? 0 : 1;
-        elevator.setPower(power);
+        leftElevator0.setPower(power);
+        rightElevator1.setPower(power);
     }
 
     public void resetEncoder() {
-        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
-    public void dropElevator() {
-        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevator.setPower(-0.5);
+        leftElevator0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightElevator1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftElevator0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightElevator1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }

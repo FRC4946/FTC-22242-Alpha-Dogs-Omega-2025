@@ -8,17 +8,23 @@ import org.firstinspires.ftc.teamcode.Constants;
 
 public class Arm extends SubsystemBase {
 
-    private final Servo arm;
+    private final Servo leftArm;
+    private final Servo rightArm;
 
     public Arm(HardwareMap hardwareMap) {
-        arm = hardwareMap.get(Servo.class, Constants.ArmConstants.arm);
+        leftArm = hardwareMap.get(Servo.class, Constants.ArmConstants.leftArm);
+        rightArm = hardwareMap.get(Servo.class, Constants.ArmConstants.rightArm);
+
+        leftArm.setDirection(Servo.Direction.REVERSE);
+        rightArm.setDirection(Servo.Direction.FORWARD);
     }
 
     public void setAngle(double angle) {
-        arm.setPosition(angle);
+        leftArm.setPosition(angle);
+        rightArm.setPosition(angle);
     }
 
     public double getAngle() {
-        return arm.getPosition();
+        return leftArm.getPosition();
     }
 }

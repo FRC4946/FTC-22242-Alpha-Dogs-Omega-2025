@@ -18,7 +18,7 @@ public class TeleopDrive extends CommandBase {
 
     private final Telemetry telemetry;
 
-    private final boolean slow;
+    private boolean slow;
 
     public TeleopDrive(DriveTrain m_DriveTrain, GamepadEx gamepad, Telemetry telemetry, boolean slow) {
         this.m_DriveTrain = m_DriveTrain;
@@ -26,13 +26,12 @@ public class TeleopDrive extends CommandBase {
         this.gamepad = gamepad;
         this.telemetry = telemetry;
 
-        this.slow = slow;
-
         addRequirements(m_DriveTrain);
     }
 
     @Override
     public void initialize() {
+        slow = false;
     }
 
     @Override
@@ -61,14 +60,19 @@ public class TeleopDrive extends CommandBase {
         double frontRightPower = (fieldOrientedY - fieldOrientedX - rotation) / denominator;
         double backRightPower = (fieldOrientedY + fieldOrientedX - rotation) / denominator;
 
-        if(slow) {
-            frontLeftPower *= 0.2;
-            backLeftPower *= 0.2;
-            frontRightPower *= 0.2;
-            backRightPower *= 0.2;
+        if (slow) {
+            m_DriveTrain.setPower(
+                    frontLeftPower * 0.1,
+                    frontRightPower * 0.1,
+                    backLeftPower * 0.1,
+                    backRightPower * 0.1);
+        } else {
+            m_DriveTrain.setPower(
+                    frontLeftPower,
+                    frontRightPower,
+                    backLeftPower,
+                    backRightPower);
         }
-
-        m_DriveTrain.setPower(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 
         if (gamepad.wasJustPressed(GamepadKeys.Button.START)) {
             m_DriveTrain.resetYaw();

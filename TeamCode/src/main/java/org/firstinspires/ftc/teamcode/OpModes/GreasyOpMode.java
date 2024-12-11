@@ -6,19 +6,18 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Commands.NewSmartIntake;
 import org.firstinspires.ftc.teamcode.Commands.SmartElevator;
-import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
+//import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleopDrive;
 import org.firstinspires.ftc.teamcode.Commands.TurnToAngle;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
-import org.firstinspires.ftc.teamcode.Subsystems.ColourSensor;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Extension;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 
 @TeleOp(name = "Greasy Teleop")
 public class GreasyOpMode extends LinearOpMode {
@@ -29,16 +28,14 @@ public class GreasyOpMode extends LinearOpMode {
     private DriveTrain s_Drivetrain;
     private Elevator s_Elevator;
     private Intake s_Intake;
-    private Wrist s_Wrist;
     private Extension s_Extension;
     private Claw s_Claw;
     private Arm s_Arm;
 
-    private ColourSensor s_ColourSensor;
 
     private TeleopDrive c_TeleopDrive;
-    private SmartElevator c_SmartElevator;
-    private SmartIntake c_SmartIntake;
+    //private SmartElevator c_SmartElevator;
+    private NewSmartIntake c_SmartIntake;
 
     private TurnToAngle c_TurnToAngle;
 
@@ -58,12 +55,10 @@ public class GreasyOpMode extends LinearOpMode {
         s_Drivetrain = new DriveTrain(hardwareMap);
         s_Elevator = new Elevator(hardwareMap);
         s_Intake = new Intake(hardwareMap);
-        s_Wrist = new Wrist(hardwareMap);
         s_Extension = new Extension(hardwareMap);
         s_Claw = new Claw(hardwareMap);
         s_Arm = new Arm(hardwareMap);
 
-        s_ColourSensor = new ColourSensor(hardwareMap, allianceColour);
 
         runtime = new ElapsedTime();
 
@@ -78,20 +73,18 @@ public class GreasyOpMode extends LinearOpMode {
                 slowMode
         );
 
-        c_SmartElevator = new SmartElevator(
-                s_Elevator,
-                s_Arm,
-                s_Claw,
-                m_DriverOp,
-                m_OperatorOp,
-                telemetry
-        );
+//        c_SmartElevator = new SmartElevator(
+//                s_Elevator,
+//                s_Arm,
+//                s_Claw,
+//                m_DriverOp,
+//                m_OperatorOp,
+//                telemetry
+//        );
 
-        c_SmartIntake = new SmartIntake(
+        c_SmartIntake = new NewSmartIntake(
                 s_Intake,
-                s_Wrist,
                 s_Extension,
-                s_ColourSensor,
                 m_DriverOp,
                 m_OperatorOp,
                 allianceColour,
@@ -105,7 +98,7 @@ public class GreasyOpMode extends LinearOpMode {
 
         c_TeleopDrive.initialize();
         c_SmartIntake.initialize();
-        c_SmartElevator.initialize();
+        //c_SmartElevator.initialize();
         //c_TurnToAngle.initialize();
 
         while (opModeIsActive()) {
@@ -116,10 +109,10 @@ public class GreasyOpMode extends LinearOpMode {
 
             c_TeleopDrive.execute();
             c_SmartIntake.execute();
-            c_SmartElevator.execute();
+            //c_SmartElevator.execute();
 
 
-            if(m_DriverOp.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
+            if(m_DriverOp.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
                 slowMode = !slowMode;
             }
 
