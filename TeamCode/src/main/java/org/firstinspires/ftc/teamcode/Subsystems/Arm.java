@@ -15,8 +15,8 @@ public class Arm extends SubsystemBase {
         leftArm = hardwareMap.get(Servo.class, Constants.ArmConstants.leftArm);
         rightArm = hardwareMap.get(Servo.class, Constants.ArmConstants.rightArm);
 
-        leftArm.setDirection(Servo.Direction.REVERSE);
-        rightArm.setDirection(Servo.Direction.FORWARD);
+        leftArm.setDirection(Servo.Direction.FORWARD);
+        rightArm.setDirection(Servo.Direction.REVERSE);
     }
 
     public void setAngle(double angle) {

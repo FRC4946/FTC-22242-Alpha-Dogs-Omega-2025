@@ -47,8 +47,8 @@ public class Constants {
     public static final class ArmConstants {
         public static final String leftArm = "leftArm1";
         public static final String rightArm = "rightArm2";
-        public static final double exchangeAngle = 0.98;
-        public static final double dropAngle = 0.32;
+        public static final double exchangeAngle = 0;
+        public static final double dropAngle = 0.45;
         public static final double grabSpecimenAngle = 0.8; // This one is redundant now
         public static final double raiseSpecimenAngle = 0.6;
         public static final double placeSpecimenAngle = 0.7;
