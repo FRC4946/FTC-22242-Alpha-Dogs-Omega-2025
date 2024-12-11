@@ -113,14 +113,14 @@ public class NewSmartIntake extends CommandBase {
                         }
 
                         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
-                            if(s_Intake.getRotation() < 0.3) {
-                                s_Intake.setRotation(s_Intake.getRotation() + 0.15);
+                            if(s_Intake.getRotation() < 0.28) {
+                                s_Intake.setRotation(s_Intake.getRotation() + 0.14);
                             }
                         }
 
                         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
                             if(s_Intake.getRotation() > 0) {
-                                s_Intake.setRotation(s_Intake.getRotation() - 0.15);
+                                s_Intake.setRotation(s_Intake.getRotation() - 0.14);
                             }
                         }
                         break;
