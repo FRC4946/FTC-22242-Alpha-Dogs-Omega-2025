@@ -20,7 +20,7 @@ public class Constants {
         public static final double kI = 0.001;
         public static final double kD = 0.001;
         public static final double kF = 0.0;
-        public static final double PIDTolerance = 10;
+        public static final double PIDTolerance = 3;
     }
 
     public static final class WristConstants {

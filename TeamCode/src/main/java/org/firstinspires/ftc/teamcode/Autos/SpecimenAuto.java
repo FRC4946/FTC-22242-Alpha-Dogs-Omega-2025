@@ -41,8 +41,8 @@ public class SpecimenAuto extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            telemetry.addData("Left Speed", s_Drivetrain.getLeftVelocity());
-            telemetry.addData("Right Speed", s_Drivetrain.getRightVelocity());
+            telemetry.addData("Left Speed", s_Drivetrain.getLeftDistance());
+            telemetry.addData("Right Speed", s_Drivetrain.getRightDistance());
             telemetry.addData("Elevator", s_Elevator.getLeftPosition());
             telemetry.update();
             switch (phase) {
@@ -58,7 +58,7 @@ public class SpecimenAuto extends LinearOpMode {
                     break;
                 case 1:
                     s_Drivetrain.setPower(-0.1, -0.1, -0.1, -0.1);
-                    phase += timer.seconds() > 1.1  ? 1 : 0;
+                    phase += s_Drivetrain.getLeftDistance() > 400 ? 1 : 0;
                     break;
                 case 2:
                      s_Drivetrain.stop();
