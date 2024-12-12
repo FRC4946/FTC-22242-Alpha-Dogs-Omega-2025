@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Commands.NewSmartElevator;
 import org.firstinspires.ftc.teamcode.Commands.NewSmartIntake;
 import org.firstinspires.ftc.teamcode.Commands.SmartElevator;
 //import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
@@ -34,7 +35,7 @@ public class GreasyOpMode extends LinearOpMode {
 
 
     private TeleopDrive c_TeleopDrive;
-    private SmartElevator c_SmartElevator;
+    private NewSmartElevator c_SmartElevator;
     private NewSmartIntake c_SmartIntake;
 
     private TurnToAngle c_TurnToAngle;
@@ -68,7 +69,7 @@ public class GreasyOpMode extends LinearOpMode {
                 telemetry
         );
 
-        c_SmartElevator = new SmartElevator(
+        c_SmartElevator = new NewSmartElevator(
                 s_Elevator,
                 s_Arm,
                 s_Claw,
@@ -85,7 +86,6 @@ public class GreasyOpMode extends LinearOpMode {
                 allianceColour,
                 telemetry
         );
-
 
 
         waitForStart();

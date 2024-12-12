@@ -64,8 +64,8 @@ public class Constants {
     public static final class ElevatorConstants {
         public static final String leftElevator = "leftElevator0";
         public static final String rightElevator = "rightElevator1";
-        public static final int highBasket = 1300;
-        public static final int lowBasket = 80;
+        public static final int highBasket = 4325;
+        public static final int lowBasket = 1000;
         public static final int exchange = 50;
     }
 

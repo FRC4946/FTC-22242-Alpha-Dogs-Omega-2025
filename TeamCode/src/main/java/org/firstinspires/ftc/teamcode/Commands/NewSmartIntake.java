@@ -27,7 +27,10 @@ public class NewSmartIntake extends CommandBase {
     private Telemetry telemetry;
 
 
-    private boolean hasPieceLogic;
+    private static  boolean isClawClosed;
+    private static boolean isRetracted;
+    private static boolean isExchanging;
+    private static boolean isRotated;
 
     public NewSmartIntake(Intake s_Intake, Extension s_Extension, GamepadEx driver, GamepadEx operator, String alliance, Telemetry telemetry) {
         this.s_Intake = s_Intake;
@@ -45,12 +48,15 @@ public class NewSmartIntake extends CommandBase {
 
     @Override
     public void initialize() {
-        s_Extension.setAngle(Constants.ExtensionConstants.retracted);
-        s_Intake.setWrist(Constants.WristConstants.defaultAngle);
+        //s_Extension.setAngle(Constants.ExtensionConstants.retracted);
+        //s_Intake.setWrist(Constants.WristConstants.defaultAngle);
         s_Intake.setRotation(Constants.IntakeConstants.defaultRotation);
-        s_Intake.closeClaw();
+        //s_Intake.closeClaw();
         setState(intakeStates.IDLING);
-        hasPieceLogic = false;
+        isClawClosed = false;
+        isExchanging = false;
+        isRetracted = true;
+        isRotated = false;
     }
 
     @Override
@@ -66,53 +72,70 @@ public class NewSmartIntake extends CommandBase {
             }
         }
 
+        if (driver.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
+            isClawClosed = !isClawClosed;
+        }
+
+        if (isClawClosed) {
+            s_Intake.closeClaw();
+        } else {
+            s_Intake.openClaw();
+        }
+
+        if (isRetracted) {
+            s_Extension.setAngle(Constants.ExtensionConstants.retracted);
+        } else {
+            s_Extension.setAngle(Constants.ExtensionConstants.extended);
+        }
+
+        if (isExchanging) {
+            s_Intake.setWrist(Constants.WristConstants.transferAngle);
+        } else {
+            s_Intake.setWrist(Constants.WristConstants.defaultAngle);
+        }
+
         switch (state) {
             case IDLING:
-                if (s_Intake.getClaw() == Constants.IntakeConstants.closed) {
-                    s_Intake.closeClaw();
-                } else {
-                    s_Intake.openClaw();
-                }
+//                if (s_Intake.getClaw() == Constants.IntakeConstants.closed) {
+//                    s_Intake.closeClaw();
+//                } else {
+//                    s_Intake.openClaw();
+//                }
                 s_Intake.setRotation(s_Intake.getRotation());
-                s_Intake.setWrist(s_Intake.getWrist());
-                s_Extension.setAngle(s_Extension.getAngle());
+//                s_Intake.setWrist(s_Intake.getWrist());
+//                s_Extension.setAngle(s_Extension.getAngle());
                 break;
             case SEARCHING:
-
                 switch (phase) {
                     case 0:
                         s_Intake.setRotation(Constants.IntakeConstants.defaultRotation);
-                        if (s_Intake.getWrist() == Constants.WristConstants.defaultAngle) {
-                            s_Intake.openClaw();
-                            s_Extension.setAngle(Constants.ExtensionConstants.extended);
+                        if (!isExchanging) {
+                            isClawClosed = false;
+                            isRetracted = false;
+                            phase++;
+                        } else {
+                            isClawClosed = true;
+                            isRetracted = false;
+                            isExchanging = false;
                             phase++;
                         }
-                        s_Intake.closeClaw();
-                        s_Intake.setWrist(Constants.WristConstants.defaultAngle);
-                        s_Extension.setAngle(Constants.ExtensionConstants.extended);
-                        phase += timer.seconds() > 0.5 ? 1 : 0;
                         break;
                     case 1:
-                        s_Intake.openClaw();
-                        phase++;
+                        phase += timer.seconds() > 0.6 ? 1 : 0;
                         break;
                     case 2:
-                        if (driver.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
-                            if (s_Intake.getClaw() == Constants.IntakeConstants.closed) {
-                                s_Intake.openClaw();
-                            } else {
-                                s_Intake.closeClaw();
-                            }
-                        }
-
+                        isClawClosed = false;
+                        phase++;
+                        break;
+                    case 3:
                         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
-                            if(s_Intake.getRotation() < 0.28) {
+                            if (s_Intake.getRotation() < 0.28) {
                                 s_Intake.setRotation(s_Intake.getRotation() + 0.14);
                             }
                         }
 
                         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
-                            if(s_Intake.getRotation() > 0) {
+                            if (s_Intake.getRotation() > 0) {
                                 s_Intake.setRotation(s_Intake.getRotation() - 0.14);
                             }
                         }
@@ -123,38 +146,48 @@ public class NewSmartIntake extends CommandBase {
                 switch (phase) {
                     case 0:
                         s_Intake.setRotation(Constants.IntakeConstants.defaultRotation);
-                        if (s_Intake.getClaw() == Constants.IntakeConstants.closed) {
-                            s_Intake.setWrist(Constants.WristConstants.transferAngle);
-                            phase += timer.seconds() > 0.5 ? 1 : 0;
+                        if (isClawClosed) {
+                            isExchanging = true;
+                            phase += timer.seconds() > 0.35 ? 1 : 0;
                         } else {
                             phase++;
                         }
                         break;
                     case 1:
-                        if (s_Extension.getAngle() == Constants.ExtensionConstants.retracted) {
+                        isRetracted = true;
+                        phase++;
+                    case 2:
+                        if (isRetracted) {
                             phase++;
                         } else {
-                            s_Extension.setAngle(Constants.ExtensionConstants.retracted);
-                            s_Intake.setWrist(Constants.WristConstants.transferAngle);
+                            isRetracted = true;
+                            isExchanging = false;
                             phase += timer.seconds() > 1.5 ? 1 : 0;
                         }
                         break;
-                    case 2:
-                        s_Intake.closeClaw();
+                    case 3:
                         s_Intake.setRotation(Constants.IntakeConstants.defaultRotation);
-                        s_Intake.setWrist(Constants.WristConstants.transferAngle);
-                        s_Extension.setAngle(Constants.ExtensionConstants.retracted);
-                        setState(intakeStates.IDLING);
+                        isRetracted = true;
+                        if (isExchanging) {
+                            setState(intakeStates.EXCHANGING);
+                        } else {
+                            setState(intakeStates.IDLING);
+                        }
                         break;
                 }
                 break;
             case EXCHANGING:
                 switch (phase) {
                     case 0:
-                        s_Intake.openClaw();
-                        phase += timer.seconds() > 2 ? 1 : 0;
+                        isClawClosed = true;
+                        if(driver.wasJustPressed(GamepadKeys.Button.A)){
+                            phase++;
+                        }
                         break;
                     case 1:
+                        isClawClosed = false;
+                        phase++;
+                    case 2:
                         setState(intakeStates.IDLING);
                         break;
                 }
@@ -183,5 +216,9 @@ public class NewSmartIntake extends CommandBase {
 
     public static boolean isSearching() {
         return state == intakeStates.SEARCHING;
+    }
+
+    public static boolean isRetracting() {
+        return state == intakeStates.RETRACTING && isClawClosed;
     }
 }
