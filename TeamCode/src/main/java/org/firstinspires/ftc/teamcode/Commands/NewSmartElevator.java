@@ -81,6 +81,22 @@ public class NewSmartElevator extends CommandBase {
             }
         }
 
+        if (driver.wasJustPressed(GamepadKeys.Button.Y)) {
+            if (state == elevatorStates.PLACE_HIGH) {
+                setState(elevatorStates.RETRACTING);
+            } else if (!openClaw) {
+                setState(elevatorStates.PLACE_HIGH);
+            }
+        }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.X)) {
+            if (state == elevatorStates.PLACE_LOW) {
+                setState(elevatorStates.RETRACTING);
+            } else if (!openClaw) {
+                setState(elevatorStates.PLACE_LOW);
+            }
+        }
+
         if (NewSmartIntake.isRetracting()) {
             openClaw = true;
         }
