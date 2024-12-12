@@ -66,10 +66,6 @@ public class NewSmartIntake extends CommandBase {
             }
         }
 
-        if(driver.wasJustPressed(GamepadKeys.Button.B)) {
-            setState(intakeStates.EXCHANGING);
-        }
-
         switch (state) {
             case IDLING:
                 if (s_Intake.getClaw() == Constants.IntakeConstants.closed) {
@@ -87,23 +83,20 @@ public class NewSmartIntake extends CommandBase {
                     case 0:
                         s_Intake.setRotation(Constants.IntakeConstants.defaultRotation);
                         if (s_Intake.getWrist() == Constants.WristConstants.defaultAngle) {
+                            s_Intake.openClaw();
+                            s_Extension.setAngle(Constants.ExtensionConstants.extended);
                             phase++;
                         }
                         s_Intake.closeClaw();
                         s_Intake.setWrist(Constants.WristConstants.defaultAngle);
+                        s_Extension.setAngle(Constants.ExtensionConstants.extended);
                         phase += timer.seconds() > 0.5 ? 1 : 0;
                         break;
                     case 1:
-                        s_Intake.setWrist(Constants.WristConstants.defaultAngle);
-                        s_Intake.closeClaw();
-                        s_Extension.setAngle(Constants.ExtensionConstants.extended);
-                        phase += timer.seconds() > .8 ? 1 : 0;
-                        break;
-                    case 2:
                         s_Intake.openClaw();
                         phase++;
                         break;
-                    case 3:
+                    case 2:
                         if (driver.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
                             if (s_Intake.getClaw() == Constants.IntakeConstants.closed) {
                                 s_Intake.openClaw();

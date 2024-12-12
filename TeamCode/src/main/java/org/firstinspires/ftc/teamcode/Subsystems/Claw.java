@@ -31,4 +31,8 @@ public class Claw extends SubsystemBase {
         return claw.getPosition();
     }
 
+    public boolean isOpen() {
+        return getAngle() == Constants.ClawConstants.open;
+    }
+
 }

@@ -89,7 +89,7 @@ public class NewSmartElevator extends CommandBase {
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.A)) {
-            if (s_Claw.getAngle() == Constants.ClawConstants.open) {
+            if (s_Claw.isOpen()) {
                 s_Claw.setClaw(Constants.ClawConstants.closed);
             } else {
                 s_Claw.setClaw(Constants.ClawConstants.open);
@@ -124,7 +124,7 @@ public class NewSmartElevator extends CommandBase {
             case PLACE_HIGH:
                 switch (phase) {
                     case 0:
-                        if (s_Claw.getAngle() == Constants.ClawConstants.closed) {
+                        if (!s_Claw.isOpen()) {
                             phase++;
                         }
                         s_Claw.setClaw(Constants.ClawConstants.closed);
@@ -144,7 +144,7 @@ public class NewSmartElevator extends CommandBase {
             case PLACE_LOW:
                 switch (phase) {
                     case 0:
-                        if (s_Claw.getAngle() == Constants.ClawConstants.closed) {
+                        if (!s_Claw.isOpen()) {
                             phase++;
                         }
                         s_Claw.setClaw(Constants.ClawConstants.closed);
