@@ -62,19 +62,18 @@ public class SpecimenAuto extends LinearOpMode {
                 case 1:
                     s_Drivetrain.setPower(-0.1, -0.1, -0.1, -0.1);
                     timer.reset();
-                    phase += s_Drivetrain.getLeftDistance() < -400 ? 1 : 0;
+                    phase += s_Drivetrain.getLeftDistance() < -1000 ? 1 : 0;
                     break;
                 case 2:
                     s_Drivetrain.stop();
                     armSetpoint = Constants.ArmConstants.placeSpecimenAngle;
                     s_Claw.closeClaw();
-                    phase += timer.seconds() > 1.5 ? 1 : 0;
+                    phase += timer.seconds() > 5 ? 1 : 0;
                     break;
                 case 3:
                     s_Claw.openClaw();
-                    ;
                     s_Drivetrain.setPower(0.1, 0.1, 0.1, 0.1);
-                    phase += s_Drivetrain.getLeftDistance() > -200 ? 1 : 0;
+                    phase += s_Drivetrain.getLeftDistance() > -400 ? 1 : 0;
                     break;
                 case 4:
                     armSetpoint = Constants.ArmConstants.exchangeAngle;
