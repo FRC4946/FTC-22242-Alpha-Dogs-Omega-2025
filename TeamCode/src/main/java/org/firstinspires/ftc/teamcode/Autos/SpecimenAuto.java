@@ -41,6 +41,8 @@ public class SpecimenAuto extends LinearOpMode {
         armSetpoint = Constants.ArmConstants.exchangeAngle;
 
         timer = new ElapsedTime();
+        s_Drivetrain.resetEncoders();
+        s_Arm.enable();
 
         waitForStart();
         while (opModeIsActive()) {
@@ -60,25 +62,27 @@ public class SpecimenAuto extends LinearOpMode {
                     phase++;
                     break;
                 case 1:
-                    s_Drivetrain.setPower(-0.1, -0.1, -0.1, -0.1);
+                    s_Drivetrain.setPower(-0.2, -0.2, -0.2, -0.2);
                     timer.reset();
-                    phase += s_Drivetrain.getLeftDistance() < -400 ? 1 : 0;
+                    phase += s_Drivetrain.getLeftDistance() < -900 ? 1 : 0;
                     break;
                 case 2:
                     s_Drivetrain.stop();
                     armSetpoint = Constants.ArmConstants.placeSpecimenAngle;
                     s_Claw.closeClaw();
-                    phase += timer.seconds() > 5 ? 1 : 0;
+                    phase += timer.seconds() > 2 ? 1 : 0;
                     break;
                 case 3:
                     s_Claw.openClaw();
-                    s_Drivetrain.setPower(0.1, 0.1, 0.1, 0.1);
-                    phase += s_Drivetrain.getLeftDistance() > -400 ? 1 : 0;
+                    s_Drivetrain.setPower(0.2, 0.2, 0.2, 0.2);
+                    phase += s_Drivetrain.getLeftDistance() > -500 ? 1 : 0;
                     break;
                 case 4:
                     armSetpoint = Constants.ArmConstants.exchangeAngle;
                     s_Claw.openClaw();
-                    s_Drivetrain.stop();
+                    s_Drivetrain.setPower(-0.2, 0.2, -0.2, 0.2);
+                    phase += Math.toDegrees(s_Drivetrain.getHeading())
+                    break;
             }
         }
     }

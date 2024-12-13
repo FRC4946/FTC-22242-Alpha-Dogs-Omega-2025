@@ -80,6 +80,18 @@ public class DriveTrain extends SubsystemBase {
         backRight3.setPower(0);
     }
 
+    public void resetEncoders() {
+        frontLeft0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRight1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeft2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRight3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
     /**
      * Updates the yaw offset to the current heading
      */
