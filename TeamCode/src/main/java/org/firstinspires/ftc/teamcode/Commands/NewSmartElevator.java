@@ -27,7 +27,8 @@ public class NewSmartElevator extends CommandBase {
 
     private elevatorStates state;
 
-    private int setpoint;
+    private int elevatorSetpoint;
+    private int armSetpoint;
     private boolean openClaw;
 
     public NewSmartElevator(Elevator s_Elevator, Arm s_Arm, Claw s_Claw, GamepadEx driver, GamepadEx operator, Telemetry telemetry) {
@@ -45,9 +46,10 @@ public class NewSmartElevator extends CommandBase {
 
     @Override
     public void initialize() {
-        setpoint = Constants.ElevatorConstants.exchange;
-        s_Arm.setAngle(Constants.ArmConstants.exchangeAngle);
+        elevatorSetpoint = Constants.ElevatorConstants.exchange;
+        armSetpoint = Constants.ArmConstants.exchangeAngle;
         s_Elevator.enable();
+        s_Arm.enable();
 
         state = elevatorStates.IDLE;
         phase = 0;
@@ -57,7 +59,8 @@ public class NewSmartElevator extends CommandBase {
     @Override
     public void execute() {
 
-        s_Elevator.setPosition(setpoint);
+        s_Elevator.setPosition(elevatorSetpoint);
+        s_Arm.setPosition(armSetpoint);
 
         if (operator.wasJustPressed(GamepadKeys.Button.START)) {
             s_Elevator.resetEncoder();
@@ -106,7 +109,7 @@ public class NewSmartElevator extends CommandBase {
                 switch (phase) {
                     case 0:
                         openClaw = false;
-                        s_Arm.setAngle(Constants.ArmConstants.placeSpecimenAngle);
+                        armSetpoint = Constants.ArmConstants.placeSpecimenAngle;
                         phase++;
                         break;
                     case 1:
@@ -114,18 +117,18 @@ public class NewSmartElevator extends CommandBase {
                 }
                 break;
             case PLACE_HIGH:
-                setpoint = Constants.ElevatorConstants.highBasket;
-                s_Arm.setAngle(Constants.ArmConstants.dropAngle);
+                elevatorSetpoint = Constants.ElevatorConstants.highBasket;
+                armSetpoint = Constants.ArmConstants.dropAngle;
                 break;
 
             case PLACE_LOW:
-                setpoint = Constants.ElevatorConstants.lowBasket;
-                s_Arm.setAngle(Constants.ArmConstants.dropAngle);
+                elevatorSetpoint = Constants.ElevatorConstants.lowBasket;
+                armSetpoint = Constants.ArmConstants.dropAngle;
                 break;
 
             case RETRACTING:
-                s_Arm.setAngle(Constants.ArmConstants.exchangeAngle);
-                setpoint = Constants.ElevatorConstants.exchange;
+                armSetpoint = Constants.ArmConstants.exchangeAngle;
+                elevatorSetpoint = Constants.ElevatorConstants.exchange;
                 setState(elevatorStates.IDLE);
                 break;
 
@@ -280,7 +283,7 @@ public class NewSmartElevator extends CommandBase {
 //        }
 
         telemetry.addLine("Elevator");
-        telemetry.addData("Setpoint", setpoint);
+        telemetry.addData("Setpoint", elevatorSetpoint);
         telemetry.addData("Left Height", s_Elevator.getLeftPosition());
         telemetry.addData("Right Height", s_Elevator.getRightPosition());
         telemetry.addData("State", state);

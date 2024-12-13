@@ -16,9 +16,9 @@ public class Constants {
 
         public static final double ticksPerRevolution = 537.6; //Ticks per revolution on the NeveRest Orbital 20 Gearmotor
 
-        public static final double kP = 0.001;
-        public static final double kI = 0.001;
-        public static final double kD = 0.001;
+        public static final double kP = 0.4;
+        public static final double kI = 0.1;
+        public static final double kD = 0.05;
         public static final double kF = 0.0;
         public static final double PIDTolerance = 3;
     }
@@ -26,7 +26,7 @@ public class Constants {
     public static final class WristConstants {
         public static final String wrist2 = "wrist1";
         public static final double defaultAngle = 0.1;
-        public static final double transferAngle = 0.78;
+        public static final double transferAngle = 0.76;
     }
 
     public static final class IntakeConstants {
@@ -40,25 +40,24 @@ public class Constants {
     public static final class ExtensionConstants {
         public static final String leftExtension = "leftExtension3";
         public static final String rightExtension = "rightExtension4";
-        public static final double retracted = 0.22;
+        public static final double retracted = 0.24;
         public static final double extended = 0;
     }
 
     public static final class ArmConstants {
-        public static final String leftArm = "leftArm1";
-        public static final String rightArm = "rightArm2";
-        public static final double exchangeAngle = 0.03;
-        public static final double dropAngle = 0.55;
-        public static final double grabSpecimenAngle = 0.8; // This one is redundant now
-        public static final double raiseSpecimenAngle = 0.6;
-        public static final double placeSpecimenAngle = 0.7;
+        public static final String arm2 = "arm2";
+        public static final int exchangeAngle = 0;
+        public static final int dropAngle = 500;
+        public static final int grabSpecimenAngle = 1; // This one is redundant now
+        public static final int raiseSpecimenAngle = 1;
+        public static final int placeSpecimenAngle = 500;
 
     }
 
     public static final class ClawConstants {
         public static final String claw0 = "claw0";
         public static final double open = 0.1;
-        public static final double closed = 0;
+        public static final double closed = 0.03;
     }
 
     public static final class ElevatorConstants {

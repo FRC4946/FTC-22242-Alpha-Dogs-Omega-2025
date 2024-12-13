@@ -1,30 +1,43 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class Arm extends SubsystemBase {
+    private final DcMotor arm2;
 
-    private final Servo leftArm;
-    private final Servo rightArm;
+    private double power;
 
     public Arm(HardwareMap hardwareMap) {
-        leftArm = hardwareMap.get(Servo.class, Constants.ArmConstants.leftArm);
-        rightArm = hardwareMap.get(Servo.class, Constants.ArmConstants.rightArm);
+        arm2 = hardwareMap.get(DcMotor.class, Constants.ArmConstants.arm2);
 
-        leftArm.setDirection(Servo.Direction.FORWARD);
-        rightArm.setDirection(Servo.Direction.REVERSE);
+        arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        arm2.setDirection(DcMotor.Direction.REVERSE);
+
+        power = 0;
     }
 
-    public void setAngle(double angle) {
-        leftArm.setPosition(angle);
-        rightArm.setPosition(angle);
+
+    public void enable() {
+        power = (power == 1) ? 0 : 1;
+        arm2.setPower(power);
     }
 
-    public double getAngle() {
-        return leftArm.getPosition();
+    public void setPosition(int angle) {
+        arm2.setTargetPosition(angle);
+        arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void resetEncoder() {
+        arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public int getAngle() {
+        return arm2.getCurrentPosition();
     }
 }

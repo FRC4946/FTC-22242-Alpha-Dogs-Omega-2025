@@ -8,8 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Commands.NewSmartElevator;
 import org.firstinspires.ftc.teamcode.Commands.NewSmartIntake;
-import org.firstinspires.ftc.teamcode.Commands.SmartElevator;
+//import org.firstinspires.ftc.teamcode.Commands.SmartElevator;
 //import org.firstinspires.ftc.teamcode.Commands.SmartIntake;
+import org.firstinspires.ftc.teamcode.Commands.PIDTurnToAngle;
 import org.firstinspires.ftc.teamcode.Commands.TeleopDrive;
 import org.firstinspires.ftc.teamcode.Commands.TurnToAngle;
 import org.firstinspires.ftc.teamcode.Constants;
@@ -39,6 +40,7 @@ public class GreasyOpMode extends LinearOpMode {
     private NewSmartIntake c_SmartIntake;
 
     private TurnToAngle c_TurnToAngle;
+    private PIDTurnToAngle c_PID;
 
     private String allianceColour;
     private ElapsedTime runtime;
@@ -61,7 +63,9 @@ public class GreasyOpMode extends LinearOpMode {
 
         runtime = new ElapsedTime();
 
-        c_TurnToAngle = new TurnToAngle(s_Drivetrain, 90, telemetry);
+        c_TurnToAngle = new TurnToAngle(s_Drivetrain, -90, telemetry);
+
+        c_PID = new PIDTurnToAngle(s_Drivetrain, 90);
 
         c_TeleopDrive = new TeleopDrive(
                 s_Drivetrain,
@@ -94,7 +98,8 @@ public class GreasyOpMode extends LinearOpMode {
         c_TeleopDrive.initialize();
         c_SmartIntake.initialize();
         c_SmartElevator.initialize();
-        //c_TurnToAngle.initialize();
+        c_TurnToAngle.initialize();
+        c_PID.initialize();
 
         while (opModeIsActive()) {
             telemetry.addData("Heading", Math.toDegrees(s_Drivetrain.getHeading()));
@@ -106,9 +111,9 @@ public class GreasyOpMode extends LinearOpMode {
             c_SmartIntake.execute();
             c_SmartElevator.execute();
 
-//            if(m_DriverOp.isDown(GamepadKeys.Button.A)) {
-//                c_TurnToAngle.execute();
-//            }
+            if(m_DriverOp.isDown(GamepadKeys.Button.DPAD_DOWN)) {
+                c_PID.execute();
+            }
 
         }
     }

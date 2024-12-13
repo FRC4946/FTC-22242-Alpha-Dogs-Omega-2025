@@ -50,7 +50,7 @@ public class PlaceBucket extends CommandBase {
                 phase += autoTimer.seconds() > 0.3 ? 1 : 0;
                 break;
             case 2:
-                s_Arm.setAngle(Constants.ArmConstants.dropAngle);
+                s_Arm.setPosition(Constants.ArmConstants.dropAngle);
                 phase += autoTimer.seconds() > 2.3 ? 1 : 0;
                 break;
             case 3:
@@ -58,7 +58,7 @@ public class PlaceBucket extends CommandBase {
                 phase += autoTimer.seconds() > 2.8 ? 1 : 0;
                 break;
             case 4:
-                s_Arm.setAngle(Constants.ArmConstants.exchangeAngle);
+                s_Arm.setPosition(Constants.ArmConstants.exchangeAngle);
                 phase += autoTimer.seconds() > 3.1 ? 1 : 0;
                 break;
             case 5:

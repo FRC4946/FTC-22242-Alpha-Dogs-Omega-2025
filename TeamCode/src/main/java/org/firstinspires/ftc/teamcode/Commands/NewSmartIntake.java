@@ -48,10 +48,7 @@ public class NewSmartIntake extends CommandBase {
 
     @Override
     public void initialize() {
-        //s_Extension.setAngle(Constants.ExtensionConstants.retracted);
-        //s_Intake.setWrist(Constants.WristConstants.defaultAngle);
         s_Intake.setRotation(Constants.IntakeConstants.defaultRotation);
-        //s_Intake.closeClaw();
         setState(intakeStates.IDLING);
         isClawClosed = false;
         isExchanging = false;
@@ -96,14 +93,7 @@ public class NewSmartIntake extends CommandBase {
 
         switch (state) {
             case IDLING:
-//                if (s_Intake.getClaw() == Constants.IntakeConstants.closed) {
-//                    s_Intake.closeClaw();
-//                } else {
-//                    s_Intake.openClaw();
-//                }
                 s_Intake.setRotation(s_Intake.getRotation());
-//                s_Intake.setWrist(s_Intake.getWrist());
-//                s_Extension.setAngle(s_Extension.getAngle());
                 break;
             case SEARCHING:
                 switch (phase) {
@@ -185,9 +175,11 @@ public class NewSmartIntake extends CommandBase {
                         }
                         break;
                     case 1:
+                        phase += timer.seconds() > 0.4 ? 1 : 0;
+                    case 2:
                         isClawClosed = false;
                         phase++;
-                    case 2:
+                    case 3:
                         setState(intakeStates.IDLING);
                         break;
                 }

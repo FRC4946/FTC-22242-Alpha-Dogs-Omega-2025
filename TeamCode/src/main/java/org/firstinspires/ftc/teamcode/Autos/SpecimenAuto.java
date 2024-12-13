@@ -23,6 +23,8 @@ public class SpecimenAuto extends LinearOpMode {
 
     private int phase;
 
+    private int armSetpoint;
+
     private ElapsedTime timer;
 
     @Override
@@ -37,6 +39,8 @@ public class SpecimenAuto extends LinearOpMode {
 
         phase = 0;
 
+        armSetpoint = Constants.ArmConstants.placeSpecimenAngle;
+
         timer = new ElapsedTime();
 
         waitForStart();
@@ -45,33 +49,34 @@ public class SpecimenAuto extends LinearOpMode {
             telemetry.addData("Right Speed", s_Drivetrain.getRightDistance());
             telemetry.addData("Elevator", s_Elevator.getLeftPosition());
             telemetry.update();
+            s_Arm.setPosition(armSetpoint);
             switch (phase) {
                 case 0:
                     s_Extension.setAngle(Constants.ExtensionConstants.retracted);
                     s_Intake.setRotation(Constants.IntakeConstants.defaultRotation);
                     s_Intake.setWrist(Constants.WristConstants.defaultAngle);
                     s_Intake.closeClaw();
-                    s_Arm.setAngle(Constants.ArmConstants.raiseSpecimenAngle);
+                    armSetpoint = Constants.ArmConstants.placeSpecimenAngle;
                     s_Claw.closeClaw();
                     timer.reset();
                     phase++;
                     break;
                 case 1:
                     s_Drivetrain.setPower(-0.1, -0.1, -0.1, -0.1);
-                    phase += s_Drivetrain.getLeftDistance() > 400 ? 1 : 0;
+                    phase += s_Drivetrain.getLeftDistance() < -400 ? 1 : 0;
                     break;
                 case 2:
                      s_Drivetrain.stop();
-                     s_Arm.setAngle(Constants.ArmConstants.grabSpecimenAngle);
+                     s_Arm.setPosition(Constants.ArmConstants.placeSpecimenAngle);
                      s_Claw.openClaw();
                      phase++;
                     break;
                 case 3:
                     s_Drivetrain.setPower(0.1, 0.1, 0.1, 0.1);
-                    phase += timer.seconds() > 2 ? 1 : 0;
+                    phase += s_Drivetrain.getLeftDistance() > -200 ? 1 : 0;
                     break;
                 case 4:
-                    s_Arm.setAngle(Constants.ArmConstants.exchangeAngle);
+                    s_Arm.setPosition(Constants.ArmConstants.exchangeAngle);
                     s_Claw.openClaw();
                     s_Drivetrain.stop();
             }

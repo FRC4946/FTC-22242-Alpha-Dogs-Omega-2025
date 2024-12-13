@@ -43,6 +43,7 @@ public class TurnToAngle extends CommandBase {
     public void initialize() {
         pid.setSetPoint(heading);
         heading = Math.toRadians(heading);
+        currentAngle = s_DriveTrain.getHeading();
     }
 
     @Override
@@ -58,6 +59,8 @@ public class TurnToAngle extends CommandBase {
         );
 
         telemetry.addData("At Sepoint", atSetpoint());
+        telemetry.addData("Setpoint", Math.toDegrees(pid.getSetPoint()));
+        telemetry.addData("Heading", Math.toDegrees(s_DriveTrain.getHeading()));
     }
 
     @Override

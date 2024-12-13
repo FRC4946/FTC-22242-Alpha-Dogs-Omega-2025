@@ -24,7 +24,7 @@ public class TeleopDrive extends CommandBase {
         this.gamepad = gamepad;
         this.telemetry = telemetry;
 
-        addRequirements(m_DriveTrain);
+        addRequirements();
     }
 
     @Override
@@ -76,6 +76,8 @@ public class TeleopDrive extends CommandBase {
 
         telemetry.addLine("Drivetrain");
         telemetry.addData("Heading", m_DriveTrain.getHeading());
+        telemetry.addData("Left Distance", m_DriveTrain.getLeftDistance());
+        telemetry.addData("Right Distance", m_DriveTrain.getRightDistance());
         telemetry.addLine();
     }
 }

@@ -66,11 +66,11 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public double getLeftDistance() {
-        return frontRight1.getCurrentPosition();
+        return (frontLeft0.getCurrentPosition() + backLeft2.getCurrentPosition()) / 2.0;
     }
 
     public double getRightDistance() {
-        return (frontRight1.getCurrentPosition() + backRight3.getCurrentPosition()) / 2;
+        return (frontRight1.getCurrentPosition() + backRight3.getCurrentPosition()) / 2.0;
     }
 
     public void stop() {
@@ -97,14 +97,15 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public double angleWrap(double radians) {
-        if(radians > Math.PI) {
+        while (radians > Math.PI) {
             radians -= 2 * Math.PI;
         }
-        if(radians < -Math.PI) {
+        while (radians < -Math.PI) {
             radians += 2 * Math.PI;
         }
         return radians;
     }
+
 //    public double getHeadingDegrees() {
 //        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 //    }
