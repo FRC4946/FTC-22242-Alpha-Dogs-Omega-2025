@@ -92,6 +92,14 @@ public class NewSmartElevator extends CommandBase {
             }
         }
 
+        if(driver.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
+            if (state == elevatorStates.CLIMBING){
+            setState(elevatorStates.RETRACTING);
+            }else{
+                setState(elevatorStates.CLIMBING);
+            }
+        }
+
         if (driver.wasJustPressed(GamepadKeys.Button.X)) {
             if (state == elevatorStates.PLACE_LOW) {
                 setState(elevatorStates.RETRACTING);
@@ -124,6 +132,11 @@ public class NewSmartElevator extends CommandBase {
             case PLACE_LOW:
                 elevatorSetpoint = Constants.ElevatorConstants.lowBasket;
                 armSetpoint = Constants.ArmConstants.dropAngle;
+                break;
+
+            case CLIMBING:
+                elevatorSetpoint = Constants.ElevatorConstants.climbing;
+                armSetpoint = Constants.ArmConstants.climbClearAngle;
                 break;
 
             case RETRACTING:
@@ -295,7 +308,8 @@ public class NewSmartElevator extends CommandBase {
         PLACE_HIGH,
         PLACE_LOW,
         PLACE_SPECIMEN,
-        RETRACTING
+        RETRACTING,
+        CLIMBING
     }
 
     private void setState(elevatorStates stateToBe) {

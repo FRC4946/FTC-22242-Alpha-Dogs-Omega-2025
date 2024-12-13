@@ -49,6 +49,7 @@ public class Constants {
         public static final int exchangeAngle = 0;
         public static final int dropAngle = 700;
         public static final int placeSpecimenAngle = 700;
+        public static final int climbClearAngle = 200;
 
     }
 
@@ -63,6 +64,7 @@ public class Constants {
         public static final String rightElevator = "rightElevator1";
         public static final int highBasket = 4325;
         public static final int lowBasket = 1000;
+        public static final int climbing = 1200;
         public static final int exchange = 50;
     }
 
