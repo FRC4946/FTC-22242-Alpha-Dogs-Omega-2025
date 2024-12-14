@@ -51,10 +51,10 @@ public class DriveTrain extends SubsystemBase {
         imu.initialize(parameters);
     }
 
-    public void setPower(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
+    public void setPower(double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower) {
         frontLeft0.setPower(frontLeftPower);
-        frontRight1.setPower(frontRightPower);
         backLeft2.setPower(backLeftPower);
+        frontRight1.setPower(frontRightPower);
         backRight3.setPower(backRightPower);
     }
 

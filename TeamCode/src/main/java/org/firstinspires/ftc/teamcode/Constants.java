@@ -26,7 +26,7 @@ public class Constants {
     public static final class WristConstants {
         public static final String wrist2 = "wrist1";
         public static final double defaultAngle = 0.1;
-        public static final double transferAngle = 0.76;
+        public static final double transferAngle = 0.78;
     }
 
     public static final class IntakeConstants {
@@ -47,8 +47,8 @@ public class Constants {
     public static final class ArmConstants {
         public static final String arm2 = "arm2";
         public static final int exchangeAngle = 0;
-        public static final int dropAngle = 700;
-        public static final int placeSpecimenAngle = 700;
+        public static final int dropAngle = 750;
+        public static final int placeSpecimenAngle = 750;
         public static final int climbClearAngle = 200;
 
     }

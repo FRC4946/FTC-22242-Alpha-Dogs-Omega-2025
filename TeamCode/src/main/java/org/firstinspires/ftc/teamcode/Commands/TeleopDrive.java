@@ -70,8 +70,8 @@ public class TeleopDrive extends CommandBase {
 
         m_DriveTrain.setPower(
                 frontLeftPower,
-                frontRightPower,
                 backLeftPower,
+                frontRightPower,
                 backRightPower);
 
         telemetry.addLine("Drivetrain");
