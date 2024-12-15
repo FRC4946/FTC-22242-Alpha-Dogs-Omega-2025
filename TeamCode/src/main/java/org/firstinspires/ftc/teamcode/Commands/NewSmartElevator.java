@@ -31,6 +31,8 @@ public class NewSmartElevator extends CommandBase {
     private int armSetpoint;
     private boolean openClaw;
 
+    private boolean triggerLogic;
+
     public NewSmartElevator(Elevator s_Elevator, Arm s_Arm, Claw s_Claw, GamepadEx driver, GamepadEx operator, Telemetry telemetry) {
         this.s_Elevator = s_Elevator;
         this.s_Arm = s_Arm;
@@ -54,6 +56,7 @@ public class NewSmartElevator extends CommandBase {
         state = elevatorStates.IDLE;
         phase = 0;
         openClaw = true;
+        triggerLogic = false;
     }
 
     @Override
@@ -66,6 +69,14 @@ public class NewSmartElevator extends CommandBase {
             s_Elevator.resetEncoder();
         }
 
+        if(operator.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
+            armSetpoint -= 50;
+        }
+
+        if(operator.wasJustPressed(GamepadKeys.Button.A)) {
+            s_Arm.resetEncoder();
+        }
+
         if (openClaw) {
             s_Claw.openClaw();
         } else {
@@ -76,27 +87,11 @@ public class NewSmartElevator extends CommandBase {
             openClaw = !openClaw;
         }
 
-        if (driver.wasJustPressed(GamepadKeys.Button.B)) {
+        if (driver.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
             if (state == elevatorStates.PLACE_SPECIMEN) {
                 setState(elevatorStates.RETRACTING);
             } else if (!openClaw) {
                 setState(elevatorStates.PLACE_SPECIMEN);
-            }
-        }
-
-        if (driver.wasJustPressed(GamepadKeys.Button.Y)) {
-            if (state == elevatorStates.PLACE_HIGH) {
-                setState(elevatorStates.RETRACTING);
-            } else if (!openClaw) {
-                setState(elevatorStates.PLACE_HIGH);
-            }
-        }
-
-        if(driver.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-            if (state == elevatorStates.CLIMBING){
-            setState(elevatorStates.RETRACTING);
-            }else{
-                setState(elevatorStates.CLIMBING);
             }
         }
 
@@ -111,6 +106,22 @@ public class NewSmartElevator extends CommandBase {
         if (NewSmartIntake.isRetracting()) {
             openClaw = true;
         }
+
+//        if (driver.wasJustPressed(GamepadKeys.Button.Y)) {
+//            if (state == elevatorStates.PLACE_HIGH) {
+//                setState(elevatorStates.RETRACTING);
+//            } else if (!openClaw) {
+//                setState(elevatorStates.PLACE_HIGH);
+//            }
+//        }
+
+//        if(driver.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
+//            if (state == elevatorStates.CLIMBING){
+//            setState(elevatorStates.RETRACTING);
+//            }else{
+//                setState(elevatorStates.CLIMBING);
+//            }
+//        }
 
         switch (state) {
             case PLACE_SPECIMEN:
@@ -309,7 +320,8 @@ public class NewSmartElevator extends CommandBase {
         PLACE_LOW,
         PLACE_SPECIMEN,
         RETRACTING,
-        CLIMBING
+        CLIMBING,
+        ZEROING
     }
 
     private void setState(elevatorStates stateToBe) {

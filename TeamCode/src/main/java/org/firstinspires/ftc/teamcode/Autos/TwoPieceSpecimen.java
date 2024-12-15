@@ -97,7 +97,7 @@ public class TwoPieceSpecimen extends LinearOpMode {
                     phase += timer.seconds() > 3 ? 1 : 0;
                 case 6:
                     s_Drivetrain.setPower(autoPower, autoPower, autoPower, autoPower);
-                    phase += s_Drivetrain.getLeftDistance() > 400 ? 1 : 0;
+                    phase += s_Drivetrain.getLeftDistance() > 430 ? 1 : 0;
                     timer.reset();
                     break;
                 case 7:

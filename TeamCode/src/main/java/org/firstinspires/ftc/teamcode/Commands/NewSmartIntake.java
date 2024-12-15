@@ -175,7 +175,7 @@ public class NewSmartIntake extends CommandBase {
                         }
                         break;
                     case 1:
-                        phase += timer.seconds() > 0.4 ? 1 : 0;
+                        phase += timer.seconds() > 1 ? 1 : 0;
                     case 2:
                         isClawClosed = false;
                         phase++;

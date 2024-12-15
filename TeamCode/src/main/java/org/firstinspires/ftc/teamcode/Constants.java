@@ -40,7 +40,7 @@ public class Constants {
     public static final class ExtensionConstants {
         public static final String leftExtension = "leftExtension3";
         public static final String rightExtension = "rightExtension4";
-        public static final double retracted = 0.3;
+        public static final double retracted = 0.27;
         public static final double extended = 0;
     }
 
